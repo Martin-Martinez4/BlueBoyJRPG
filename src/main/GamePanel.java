@@ -1,5 +1,6 @@
 package main;
 
+import Battle.BattleManager;
 import entity.Entity;
 import entity.Player;
 import object.SuperObject;
@@ -14,12 +15,12 @@ public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize = 16;
     // Scale the sprites so that they look bigger on modern screens
     // 16 * 3 scale
-    final int scale = 3;
+    public final int scale = 4;
 
     final public int tileSize = originalTileSize * scale;
 
     // Determine the max tiles allowed on the screen
-    final public int maxScreenCol = 16;
+    final public int maxScreenCol = 18;
     final public int maxScreenRow = 12;
     final public int screenWidth = tileSize * maxScreenCol;
     final public int screenHeight = tileSize * maxScreenRow;
@@ -47,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public AssetSetter assetSetter = new AssetSetter(this);
     public UI ui = new UI(this);
-    public Battle battle = new Battle(this);
+    public BattleManager battleManager = new BattleManager(this);
     public Player player = new Player(this, keyHandler);
     // 10 objects will be displayed at the same time
     public SuperObject[] objects = new SuperObject[10];
@@ -89,36 +90,6 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();
     }
 
-//    @Override
-//    public void run() {
-//
-//        // 0.01667 seconds
-//        double drawInterval = 1_000_000_000.00/fps;
-//        double nextDrawTime = System.nanoTime() + drawInterval;
-//
-//        // Game loop
-//        while(gameThread != null){
-//
-//            // Update: update information
-//            update();
-//            // draw: draw the screen with the updated information
-//            // repaint will run the paintComponent method
-//            repaint();
-//
-//
-//            try{
-//                double remainingTime = (nextDrawTime - System.nanoTime())/1_000_000;
-//                if(remainingTime < 0){
-//                    remainingTime = 0;
-//                }
-//                Thread.sleep((long) remainingTime);
-//
-//                nextDrawTime += drawInterval;
-//            }catch (InterruptedException e){
-//                e.printStackTrace();
-//            }
-//        }
-//    }
     @Override
     public void run() {
 
@@ -193,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable{
             ui.draw(g2);
         } else if (gameState == gameStates.battleState) {
 
-            battle.draw(g2);
+            battleManager.draw(g2);
 
         } else{
             // Have to draw the tiles first so the player is not hidden under the tile

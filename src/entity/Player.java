@@ -43,7 +43,7 @@ public class Player extends Entity{
     public void setDefaultValues(){
         this.worldX = gamePanel.tileSize * 23;
         this.worldY = gamePanel.tileSize * 21;
-        this.speed = 4;
+        this.speed = gamePanel.scale + 1;
         this.direction = "down";
     }
 
@@ -89,7 +89,6 @@ public class Player extends Entity{
                 switch (direction){
                     case "up":
                         worldY -= speed;
-                        this.encounterEnemy();
 
                         break;
                     case "down":
@@ -103,6 +102,7 @@ public class Player extends Entity{
                         break;
 
                 }
+                this.encounterEnemy();
             }
 
             spriteCounter++;

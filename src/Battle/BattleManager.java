@@ -1,31 +1,34 @@
-package main;
+package Battle;
+
+import main.GamePanel;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
-public class Battle {
+public class BattleManager {
 
     // Do not create new instances inside the game loop or else a new instance will be created 60 times per second
     GamePanel gamePanel;
     Graphics2D g2;
+
+    ArrayList<BattleState> battleStates = new ArrayList<BattleState>();
+
     Font arial_40, arial_80B;
     // From Font Folder
     Font jersey15;
     Font vT323;
     Font iBMPlexMono;
-    //    BufferedImage keyImage;
-    public boolean messageOn = false;
-    public String message = "";
-    public String currentDialogue = "";
 
 
-    public Battle(GamePanel gamePanel) {
+    public BattleManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
         this.arial_80B = new Font("Arial", Font.BOLD, 80);
 //        this.keyImage = new Key(this.gamePanel).image;
+        this.battleStates.add(new ActionSelectState(this, gamePanel));
 
         try{
 
@@ -47,10 +50,7 @@ public class Battle {
 
     }
 
-    public void showMessage(String text) {
-        this.message = text;
-        this.messageOn = true;
-    }
+
 
     public void draw(Graphics2D g2) {
         g2.setFont(arial_40);
@@ -74,36 +74,15 @@ public class Battle {
 
 
     public void drawBattleScene(){
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
-        // window
-        int x = gamePanel.tileSize * 2;
-        int y = gamePanel.tileSize/2;
-        int width = gamePanel.screenWidth - (gamePanel.tileSize*4);
-        int height = gamePanel.screenHeight - (gamePanel.tileSize*4);
-        drawSubWindow(x, y, width, height);
-        String text = "Fight";
-        x = getXforCenteredText(text);
-        y = gamePanel.screenHeight/2;
-        g2.drawString(text, x, y);
-    }
 
-    public void drawSubWindow(int x, int y, int width, int height){
-        Color windowColor = new Color(0,0,0, 225);
-        g2.setColor(windowColor);
-        g2.fillRoundRect(x, y, width, height, 35, 35);
-
-        Color borderColor = new Color(255,255,255);
-        g2.setColor(borderColor);
-        g2.setStroke(new BasicStroke(5));
-        g2.drawRoundRect(x,y, width, height, 35,35);
+        this.battleStates.get(battleStates.size()-1).draw(g2);
 
     }
 
-    public int getXforCenteredText(String text){
-        int x;
-        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        // Center the text
-        x = gamePanel.screenWidth/2 - length/2;
-        return x;
+    public void handleInputs(KeyEvent e){
+        this.battleStates.get(battleStates.size()-1).handleInputs(e);
+
     }
+
+
 }

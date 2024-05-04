@@ -61,10 +61,7 @@ public class KeyHandler implements KeyListener {
         }
         // Battle State
         else if(gamePanel.gameState == GamePanel.gameStates.battleState){
-            if(code == KeyEvent.VK_P){
-                gamePanel.gameState = GamePanel.gameStates.playState;
-
-            }
+           this.gamePanel.battleManager.handleInputs(e);
         }
         // Dialogue State
         else if(gamePanel.gameState == GamePanel.gameStates.dialogueState){
