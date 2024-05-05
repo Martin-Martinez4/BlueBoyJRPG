@@ -97,7 +97,7 @@ public class ActionSelectState implements BattleState{
 //        int innerWindowY = y - y/2 + (height - (int)(gamePanel.screenHeight * .25));
         int innerWindowY = (int)(gamePanel.screenHeight * .45) + (y/16);
         // parent margin + (parentWidth - (childWidth/2)) to center the window
-        UtilityTool.drawSubWindow( innnerWindowX, innerWindowY, (int)(gamePanel.screenWidth * .15), (int)(gamePanel.screenHeight * .45), g2);
+        UtilityTool.drawSubWindow( innnerWindowX, innerWindowY, (int)(gamePanel.screenWidth * .17), (int)(gamePanel.screenHeight * .45), g2);
         x = UtilityTool.getXforCenteredText(text, gamePanel, g2);
         y = gamePanel.screenHeight/2;
         g2.drawString(text, x, y);
@@ -154,7 +154,7 @@ public class ActionSelectState implements BattleState{
                 break;
             case KeyEvent.VK_ENTER:
                 if(currentOption == options.Skills){
-                    battleManager.battleStates.add(new SkillSelectState(battleManager, gamePanel));
+                    battleManager.pushState(new SkillSelectState(battleManager, gamePanel));
                 }
                 // Check the option and act accordingly
                 // Setup the state stack later

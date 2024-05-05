@@ -3,6 +3,7 @@ package main;
 import Battle.BattleManager;
 import entity.Entity;
 import entity.Player;
+import entity.combatants.JackFrost;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -75,6 +76,8 @@ public class GamePanel extends JPanel implements Runnable{
         // Add event listener to the window
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+
+
     }
 
     // Change name because it does a lot of things now
@@ -83,6 +86,8 @@ public class GamePanel extends JPanel implements Runnable{
         assetSetter.setObject();
         assetSetter.setNPC();
         //playMusic(0);
+        JackFrost jackFrost = new JackFrost();
+        jackFrost.showStats();
     }
 
     public void startGameThread(){
@@ -123,11 +128,11 @@ public class GamePanel extends JPanel implements Runnable{
 
             }
             // For FPS counter
-            if(timer >= nanoSecsPerSec){
-                System.out.println("FPS: "+ drawCount);
-                drawCount = 0;
-                timer = 0;
-            }
+//            if(timer >= nanoSecsPerSec){
+//                System.out.println("FPS: "+ drawCount);
+//                drawCount = 0;
+//                timer = 0;
+//            }
 
         }
     }

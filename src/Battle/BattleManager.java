@@ -14,7 +14,7 @@ public class BattleManager {
     GamePanel gamePanel;
     Graphics2D g2;
 
-    ArrayList<BattleState> battleStates = new ArrayList<BattleState>();
+    private ArrayList<BattleState> battleStates = new ArrayList<BattleState>();
 
     Font arial_40, arial_80B;
     // From Font Folder
@@ -82,6 +82,26 @@ public class BattleManager {
     public void handleInputs(KeyEvent e){
         this.battleStates.get(battleStates.size()-1).handleInputs(e);
 
+    }
+
+    public void popState(){
+        int firstIndex = battleStates.size()-1;
+        if(firstIndex > 0){
+
+            battleStates.remove(firstIndex);
+        }
+    }
+
+    public void setPlayerTeam(){
+
+    }
+
+    public void setEnemyTeam(){
+
+    }
+
+    public void pushState(BattleState battleState){
+        battleStates.add(battleState);
     }
 
 
