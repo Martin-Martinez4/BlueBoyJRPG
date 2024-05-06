@@ -26,7 +26,6 @@ public class ActionSelectState implements BattleState{
         Guard,
         Pass,
         Escape
-
     }
 
     options currentOption = options.Attack;
@@ -113,7 +112,7 @@ public class ActionSelectState implements BattleState{
                 stringX = (int)(gamePanel.screenWidth * .12) - innnerWindowX/2;
             }
 
-            if(currentOption == option ){
+            if(currentOption == option){
                 g2.drawString(">", (int)(gamePanel.screenWidth * .12) - innnerWindowX/2, innerWindowY + gamePanel.tileSize * (i+1));
             }
 
@@ -137,7 +136,14 @@ public class ActionSelectState implements BattleState{
                 health = this.battleManager.turnOrderManager.getPlayerTeam().get(i).health;
                 magicPower = this.battleManager.turnOrderManager.getPlayerTeam().get(i).magicPower;
 
-                UtilityTool.drawSubWindow(textX, (int)(gamePanel.screenHeight * .70), (gamePanel.tileSize*3), (gamePanel.tileSize*2), g2);
+                if(battleManager.turnOrderManager.currentTeam == TurnOrderManager.team.player &&  battleManager.turnOrderManager.currentIndex == i){
+
+                    UtilityTool.drawSubWindow(textX, (int)(gamePanel.screenHeight * .70), (gamePanel.tileSize*3), (gamePanel.tileSize*2), new Color(0, 0, 0),new Color(50, 50, 150), g2);
+                }
+                else{
+
+                    UtilityTool.drawSubWindow(textX, (int)(gamePanel.screenHeight * .70), (gamePanel.tileSize*3), (gamePanel.tileSize*2), g2);
+                }
                 g2.drawString(name, (int)(textX+gamePanel.tileSize*.15), (int)(gamePanel.screenHeight * .70) + gapBetweenText);
 
                 g2.drawString("HP: "+ health, (int)(textX+gamePanel.tileSize*.15), (int)(gamePanel.screenHeight * .70) + gapBetweenText*2);
@@ -157,7 +163,16 @@ public class ActionSelectState implements BattleState{
                 health = this.battleManager.turnOrderManager.getEnemyTeam().get(i).health;
                 magicPower = this.battleManager.turnOrderManager.getEnemyTeam().get(i).magicPower;
 
-                UtilityTool.drawSubWindow(textX, (int)(gamePanel.screenHeight * .10), (gamePanel.tileSize*3), (gamePanel.tileSize*2), g2);
+                if(battleManager.turnOrderManager.currentTeam == TurnOrderManager.team.enemy &&  battleManager.turnOrderManager.currentIndex == i){
+
+                    UtilityTool.drawSubWindow(textX, (int)(gamePanel.screenHeight * .10), (gamePanel.tileSize*3), (gamePanel.tileSize*2), new Color(50, 10, 10),new Color(75, 60, 60), g2);
+                }
+                else{
+
+                    UtilityTool.drawSubWindow(textX, (int)(gamePanel.screenHeight * .10), (gamePanel.tileSize*3), (gamePanel.tileSize*2), g2);
+                }
+
+
                 g2.drawString(name, (int)(textX+gamePanel.tileSize*.15),  (int)(gamePanel.screenHeight * .10)+ gapBetweenText);
 
                 g2.drawString("HP: "+ health, (int)(textX+gamePanel.tileSize*.15),  (int)(gamePanel.screenHeight * .10) + gapBetweenText*2);
@@ -194,9 +209,23 @@ public class ActionSelectState implements BattleState{
                 break;
             case KeyEvent.VK_ENTER:
             case KeyEvent.VK_RIGHT:
-                if(currentOption == options.Skills){
-                    battleManager.pushState(new SkillSelectState(battleManager, gamePanel));
+                switch (currentOption){
+                    case options.Attack:
+                        battleManager.pushState(new TargetSelectState(battleManager, gamePanel));
+                        break;
+                    case options.Skills:
+                        battleManager.pushState(new SkillSelectState(battleManager, gamePanel));
+                        break;
+                    case options.Pass:
+                        battleManager.turnOrderManager.handleAddAdvantageTurn();
+                        battleManager.turnOrderManager.handleEndTurn();
+                        break;
+                    case options.Escape:
+                            // For now all escape attempts work
+                        gamePanel.gameState = GamePanel.gameStates.playState;
+                        break;
                 }
+
                 // Check the option and act accordingly
                 // Setup the state stack later
                 // Attack and skills have subStates

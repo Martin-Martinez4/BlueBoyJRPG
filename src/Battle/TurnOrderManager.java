@@ -40,6 +40,14 @@ public class TurnOrderManager {
         this.playerTeam.add(new JackFrost());
         this.playerTeam.add(new JackFrost());
         this.playerTeam.add(new JackFrost());
+
+        if(currentTeam == team.player){
+            this.normalTurns = playerTeam.size();
+
+        }
+        else{
+            this.normalTurns = enemyTeam.size();
+        }
     }
 
     public ArrayList<Combatant> getPlayerTeam() {
@@ -75,12 +83,16 @@ public class TurnOrderManager {
 
         advantageTurnGivenOut = false;
 
+        System.out.println(normalTurns);
+        System.out.println(normalTurns <= 0 && advantageTurns <= 0);
         if(normalTurns <= 0 && advantageTurns <= 0){
             handleSwitchTeam();
         }
 
         currentIndex++;
-        if((currentTeam == team.player && currentIndex <= playerTeam.size()) || (currentTeam == team.enemy && currentIndex <= enemyTeam.size())){
+        System.out.println("CurrentIndex: " + currentIndex);
+        System.out.println(currentTeam.name() + " Normal Turns: " + normalTurns);
+        if((currentTeam == team.player && currentIndex >= playerTeam.size()) || (currentTeam == team.enemy && currentIndex >= enemyTeam.size())){
             currentIndex = 0;
         }
     }

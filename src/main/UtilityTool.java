@@ -17,6 +17,8 @@ public class UtilityTool {
 
     // Move to utils
     public static void drawSubWindow(int x, int y, int width, int height, Graphics2D g2){
+        Color pastColor = g2.getColor();
+
         Color windowColor = new Color(0,0,0, 225);
         g2.setColor(windowColor);
         g2.fillRoundRect(x, y, width, height, 35, 35);
@@ -25,6 +27,37 @@ public class UtilityTool {
         g2.setColor(borderColor);
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(x,y, width, height, 20,20);
+
+        g2.setColor(pastColor);
+
+    }
+    public static void drawSubWindow(int x, int y, int width, int height,  Color windowColor, Graphics2D g2){
+        Color pastColor = g2.getColor();
+
+        Color borderColor = new Color(255,255,255);
+        g2.setColor(borderColor);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(x,y, width, height, 20,20);
+
+        g2.setColor(windowColor);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+        g2.setColor(new Color(255,255,255));
+
+        g2.setColor(pastColor);
+
+    }
+    public static void drawSubWindow(int x, int y, int width, int height,  Color windowColor, Color borderColor, Graphics2D g2){
+
+        Color pastColor = g2.getColor();
+
+        g2.setColor(windowColor);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+
+        g2.setColor(borderColor);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(x,y, width, height, 20,20);
+        g2.setColor(pastColor);
+
 
     }
 
