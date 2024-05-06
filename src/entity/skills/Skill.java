@@ -7,7 +7,7 @@ public class Skill {
         magic
     }
 
-    static public enum element{
+    public enum element{
         fire,
         ice,
         force,
@@ -21,10 +21,21 @@ public class Skill {
     element element;
     int power;
 
-    Skill(type type, element element, int power){
+   public Skill(type type, element element, int power){
         this.type = type;
         this.element = element;
         this.power = power;
     }
 
+    public Skill.type getType() {
+        return type;
+    }
+
+    public Skill.element getElement() {
+        return element;
+    }
+
+    public int getPower() {
+        return power;
+    }
 }

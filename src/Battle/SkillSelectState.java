@@ -93,6 +93,7 @@ public class SkillSelectState implements BattleState{
                 }
                 break;
             case KeyEvent.VK_BACK_SPACE:
+            case KeyEvent.VK_LEFT:
                 battleManager.popState();
 
         }

@@ -1,14 +1,17 @@
 package main;
 
 import Battle.BattleManager;
+import Battle.TurnOrderManager;
 import entity.Entity;
 import entity.Player;
+import entity.combatants.Combatant;
 import entity.combatants.JackFrost;
 import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     // Screen settings
@@ -49,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public AssetSetter assetSetter = new AssetSetter(this);
     public UI ui = new UI(this);
-    public BattleManager battleManager = new BattleManager(this);
+    public BattleManager battleManager = new BattleManager(this, new ArrayList<Combatant>());
     public Player player = new Player(this, keyHandler);
     // 10 objects will be displayed at the same time
     public SuperObject[] objects = new SuperObject[10];
@@ -86,8 +89,6 @@ public class GamePanel extends JPanel implements Runnable{
         assetSetter.setObject();
         assetSetter.setNPC();
         //playMusic(0);
-        JackFrost jackFrost = new JackFrost();
-        jackFrost.showStats();
     }
 
     public void startGameThread(){

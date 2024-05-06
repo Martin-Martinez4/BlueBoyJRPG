@@ -1,5 +1,6 @@
 package Battle;
 
+import entity.combatants.Combatant;
 import main.GamePanel;
 
 import java.awt.*;
@@ -7,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+// May have to add an enemy turn state and create some crude enemy AI
+// If turnOrder enemy turn push enemy state; if player Turn push Action SelectState
 
 public class BattleManager {
 
@@ -22,16 +26,25 @@ public class BattleManager {
     Font vT323;
     Font iBMPlexMono;
 
+//    Combatant[] playerTeam = new Combatant[3];
+//    Combatant[] enemyTeam = new Combatant[3];
 
-    public BattleManager(GamePanel gamePanel) {
+
+    // Manage turns
+    public TurnOrderManager turnOrderManager;
+
+
+    public BattleManager(GamePanel gamePanel, ArrayList<Combatant> playerTeam) {
         this.gamePanel = gamePanel;
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
         this.arial_80B = new Font("Arial", Font.BOLD, 80);
-//        this.keyImage = new Key(this.gamePanel).image;
+
+        // No need for naything outisde of the BattleManager to know about this yet
+        this.turnOrderManager = new TurnOrderManager();
+        // this.keyImage = new Key(this.gamePanel).image;
         this.battleStates.add(new ActionSelectState(this, gamePanel));
 
         try{
-
             InputStream inputStream = getClass().getResourceAsStream("/fonts/Jersey15-Regular.ttf");
             jersey15 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 
@@ -47,6 +60,7 @@ public class BattleManager {
         catch (IOException e){
             e.printStackTrace();
         }
+
 
     }
 
@@ -92,13 +106,7 @@ public class BattleManager {
         }
     }
 
-    public void setPlayerTeam(){
 
-    }
-
-    public void setEnemyTeam(){
-
-    }
 
     public void pushState(BattleState battleState){
         battleStates.add(battleState);
