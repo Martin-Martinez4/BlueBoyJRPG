@@ -1,6 +1,7 @@
 package Battle;
 
 import entity.combatants.Combatant;
+import entity.skills.Skill;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -31,7 +32,7 @@ public class TargetSelectState implements BattleState{
         BattleUI.drawSelectionMenu(gamePanel, g2);
         BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
 
-        BattleUI.drawTurnDisplay(gamePanel, g2);
+        BattleUI.drawTurnDisplay(battleManager.turnOrderManager.currentTeam, battleManager.turnOrderManager.normalTurns, battleManager.turnOrderManager.advantageTurns, gamePanel, g2);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 35F));
 
@@ -49,25 +50,34 @@ public class TargetSelectState implements BattleState{
 
     @Override
     public void handleInputs(KeyEvent e) {
+        TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
         int code = e.getKeyCode();
 
         switch (code){
 
             case KeyEvent.VK_RIGHT:
                 currentTarget++;
-                if(currentTarget > battleManager.turnOrderManager.enemyTeam.size()-1){
+                if(currentTarget > turnOrderManager.enemyTeam.size()-1){
                     currentTarget = 0;
                 }
                         break;
             case KeyEvent.VK_LEFT:
                 currentTarget--;
                 if(currentTarget < 0){
-                    currentTarget = battleManager.turnOrderManager.enemyTeam.size()-1;
+                    currentTarget = turnOrderManager.enemyTeam.size()-1;
                 }
                         break;
             case KeyEvent.VK_ENTER:
-            case KeyEvent.VK_BACK_SPACE:
                 // Damage time?
+                Combatant currentPlayer = turnOrderManager.playerTeam.get(turnOrderManager.currentIndex);
+                int damage = currentPlayer.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), turnOrderManager.enemyTeam.get(currentTarget));
+                turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
+                turnOrderManager.handleEndTurn();
+
+                battleManager.popState();
+                battleManager.popState();
+                break;
+            case KeyEvent.VK_BACK_SPACE:
 
                 battleManager.popState();
                 break;

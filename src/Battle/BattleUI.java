@@ -205,9 +205,29 @@ public class BattleUI {
         }
     }
 
-    static void drawTurnDisplay(GamePanel gamePanel, Graphics2D g2){
+    static void drawTurnDisplay(TurnOrderManager.team currentTeam, int normalTurns, int advantageTurns, GamePanel gamePanel, Graphics2D g2){
         int innerWindowY = (int)(gamePanel.screenHeight * .45);
+        int length = (int)g2.getFontMetrics().getStringBounds(currentTeam.toString(), g2).getWidth();
         UtilityTool.drawSubWindow((int)(gamePanel.screenWidth * .85) - gamePanel.tileSize/2, innerWindowY, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .45), g2);
+
+        g2.drawString(currentTeam.toString(), (int)((gamePanel.screenWidth * .85) - (gamePanel.tileSize/2)) - (int)(gamePanel.screenWidth * .12)/2 - length/2, innerWindowY + gamePanel.tileSize);
+
+
+        int turnGapStep =  -(gamePanel.tileSize/2);
+        int turnGap =  0;
+        // draw advantage turns from the bottom up
+        for(int i = 0; i < advantageTurns; i++){
+            UtilityTool.drawSubWindow((int)(gamePanel.screenWidth * .85) - gamePanel.tileSize/2, innerWindowY +  (int)(gamePanel.screenHeight * .40) - turnGap, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .08), new Color(0, 0, 255), g2);
+
+            turnGap -= turnGapStep;
+        }
+        for(int i = 0; i < normalTurns; i++){
+            UtilityTool.drawSubWindow((int)(gamePanel.screenWidth * .85) - gamePanel.tileSize/2, innerWindowY +  (int)(gamePanel.screenHeight * .40) - turnGap, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .08), new Color(0, 255, 0), g2);
+
+            turnGap -= turnGapStep;
+        }
+
+        // draw normal turns from the bottom up
 
     }
 

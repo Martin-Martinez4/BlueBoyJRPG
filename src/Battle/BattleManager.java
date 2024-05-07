@@ -40,7 +40,7 @@ public class BattleManager {
         this.arial_80B = new Font("Arial", Font.BOLD, 80);
 
         // No need for naything outisde of the BattleManager to know about this yet
-        this.turnOrderManager = new TurnOrderManager();
+        this.turnOrderManager = new TurnOrderManager(gamePanel, this);
         // this.keyImage = new Key(this.gamePanel).image;
         this.battleStates.add(new ActionSelectState(this, gamePanel));
 
@@ -106,10 +106,14 @@ public class BattleManager {
         }
     }
 
-
-
     public void pushState(BattleState battleState){
         battleStates.add(battleState);
+    }
+
+    public void endBattle(){
+        System.out.println("This Ran:");
+        gamePanel.gameState = GamePanel.gameStates.playState;
+        this.turnOrderManager = new TurnOrderManager(gamePanel, this);
     }
 
 

@@ -92,7 +92,7 @@ public class ActionSelectState implements BattleState{
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 35F));
         BattleUI.drawSelectionOptions(currentOption, gamePanel, g2);
 
-        BattleUI.drawTurnDisplay(gamePanel, g2);
+        BattleUI.drawTurnDisplay(battleManager.turnOrderManager.currentTeam, battleManager.turnOrderManager.normalTurns, battleManager.turnOrderManager.advantageTurns, gamePanel, g2);
 
 
         TurnOrderManager turnOrderManager = battleManager.turnOrderManager;

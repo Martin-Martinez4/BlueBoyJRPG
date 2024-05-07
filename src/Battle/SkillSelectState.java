@@ -28,8 +28,7 @@ public class SkillSelectState implements BattleState{
         BattleUI.drawSelectionMenu(gamePanel, g2);
         BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
 
-
-        BattleUI.drawTurnDisplay(gamePanel, g2);
+        BattleUI.drawTurnDisplay(battleManager.turnOrderManager.currentTeam, battleManager.turnOrderManager.normalTurns, battleManager.turnOrderManager.advantageTurns, gamePanel, g2);
 
         TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
 
