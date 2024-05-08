@@ -47,7 +47,6 @@ public class TargetSelectState implements BattleState{
 
             do {
                 currentTarget++;
-                System.out.println("CurrentIndex: " + currentTarget);
                 if(currentTarget > turnOrderManager.enemyTeam.size()-1){
                     currentTarget = 0;
                 }
@@ -80,7 +79,6 @@ public class TargetSelectState implements BattleState{
 
                 do {
                     currentTarget++;
-                    System.out.println("CurrentIndex: " + currentTarget);
                     if(currentTarget > turnOrderManager.enemyTeam.size()-1){
                         currentTarget = 0;
                     }
@@ -100,7 +98,6 @@ public class TargetSelectState implements BattleState{
 
                 do {
                     currentTarget--;
-                    System.out.println("CurrentIndex: " + currentTarget);
                     if(currentTarget < 0){
                         currentTarget = turnOrderManager.enemyTeam.size()-1;
                     }
@@ -112,12 +109,13 @@ public class TargetSelectState implements BattleState{
             case KeyEvent.VK_ENTER:
                 // Damage time?
                 Combatant currentPlayer = turnOrderManager.playerTeam.get(turnOrderManager.currentIndex);
+                Combatant targetedEnemy =  turnOrderManager.enemyTeam.get(currentTarget);
                 int damage = currentPlayer.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), turnOrderManager.enemyTeam.get(currentTarget));
                 turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
                 turnOrderManager.handleEndTurn();
 
-                battleManager.popState();
-                battleManager.popState();
+                battleManager.pushState(new BattleDialogueState(String.format("%s attacks %s for %o damage", currentPlayer.name, turnOrderManager.enemyTeam.get(currentTarget).name, damage), battleManager, gamePanel, this));
+
                 break;
             case KeyEvent.VK_BACK_SPACE:
 

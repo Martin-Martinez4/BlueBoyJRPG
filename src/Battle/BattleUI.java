@@ -206,6 +206,8 @@ public class BattleUI {
     }
 
     static void drawTurnDisplay(TurnOrderManager.team currentTeam, int normalTurns, int advantageTurns, GamePanel gamePanel, Graphics2D g2){
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 35F));
+
         int innerWindowY = (int)(gamePanel.screenHeight * .45);
         int length = (int)g2.getFontMetrics().getStringBounds(currentTeam.toString(), g2).getWidth();
         UtilityTool.drawSubWindow((int)(gamePanel.screenWidth * .85) - gamePanel.tileSize/2, innerWindowY, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .45), g2);

@@ -106,6 +106,12 @@ public class BattleManager {
         }
     }
 
+    public void popAllExceptFirst(){
+        while(battleStates.size() > 1){
+            this.popState();
+        }
+    }
+
     public void pushState(BattleState battleState){
         battleStates.add(battleState);
     }
@@ -113,6 +119,15 @@ public class BattleManager {
     public void endBattle(){
         gamePanel.gameState = GamePanel.gameStates.playState;
         this.turnOrderManager = new TurnOrderManager(gamePanel, this);
+    }
+
+    public void popUntil(int targetHash){
+        while(this.battleStates.getLast().hashCode() != targetHash){
+            this.popState();
+            if(battleStates.size() <= 1){
+                break;
+            }
+        }
     }
 
 

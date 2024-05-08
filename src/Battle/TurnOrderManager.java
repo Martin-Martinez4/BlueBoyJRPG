@@ -83,6 +83,9 @@ public class TurnOrderManager {
             System.out.println("Game Over");
         }
         if(checkIfTeamDied(enemyTeam)){
+            // Push win battle animation
+
+            // Then do the below there
             battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
             gamePanel.gameState = GamePanel.gameStates.playState;
         }
@@ -172,7 +175,6 @@ public class TurnOrderManager {
 
             do {
                 currentIndex++;
-                System.out.println("CurrentIndex: " + currentIndex);
                 if ((currentTeam == team.player && currentIndex >= playerTeam.size()) || (currentTeam == team.enemy && currentIndex >= enemyTeam.size())) {
                     currentIndex = 0;
                 }

@@ -32,6 +32,8 @@ public class ActionSelectState implements BattleState{
     options currentOption = options.Attack;
     options[] optionsArray = options.values();
 
+    String name = "action select";
+
 
     public ActionSelectState(BattleManager battleManager, GamePanel gamePanel) {
         this.gamePanel = gamePanel;
