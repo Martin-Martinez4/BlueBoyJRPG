@@ -6,6 +6,7 @@ import entity.Entity;
 import entity.Player;
 import entity.combatants.Combatant;
 import entity.combatants.JackFrost;
+import entity.combatants.Slime;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -52,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public AssetSetter assetSetter = new AssetSetter(this);
     public UI ui = new UI(this);
-    public BattleManager battleManager = new BattleManager(this, new ArrayList<Combatant>());
+    public BattleManager battleManager;
     public Player player = new Player(this, keyHandler);
     // 10 objects will be displayed at the same time
     public SuperObject[] objects = new SuperObject[10];
@@ -69,7 +70,16 @@ public class GamePanel extends JPanel implements Runnable{
 
     public gameStates gameState;
 
+    public ArrayList<Combatant> playerTeam;
+
     public GamePanel(){
+        this.playerTeam = new ArrayList<Combatant>();
+        playerTeam.add(new JackFrost());
+        playerTeam.add(new Slime());
+        playerTeam.add(new Slime());
+
+        this.battleManager = new BattleManager(this, this.playerTeam);
+
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         // if true all the drawing from this component will be done in an offscreen painting buffer.
@@ -79,6 +89,7 @@ public class GamePanel extends JPanel implements Runnable{
         // Add event listener to the window
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+
 
 
     }

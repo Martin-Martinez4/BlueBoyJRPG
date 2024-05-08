@@ -41,6 +41,22 @@ public class TargetSelectState implements BattleState{
         // Draw player Team
         BattleUI.drawPlayerTeam(turnOrderManager.playerTeam, turnOrderManager.currentTeam, turnOrderManager.currentIndex, gamePanel, g2);
 
+        if(turnOrderManager.enemyTeam.get(currentTarget).health <= 0){
+
+            int checkDeadCounter = 0;
+
+            do {
+                currentTarget++;
+                System.out.println("CurrentIndex: " + currentTarget);
+                if(currentTarget > turnOrderManager.enemyTeam.size()-1){
+                    currentTarget = 0;
+                }
+
+                checkDeadCounter++;
+            } while ((turnOrderManager.enemyTeam.get(currentTarget).health <= 0) && checkDeadCounter <= turnOrderManager.enemyTeam.size());
+
+        }
+
         // Draw Target Selection
         BattleUI.drawTargetSelect(turnOrderManager.enemyTeam, turnOrderManager.currentTeam, currentTarget, gamePanel, g2);
 
@@ -56,17 +72,43 @@ public class TargetSelectState implements BattleState{
         switch (code){
 
             case KeyEvent.VK_RIGHT:
-                currentTarget++;
-                if(currentTarget > turnOrderManager.enemyTeam.size()-1){
-                    currentTarget = 0;
-                }
-                        break;
+//                currentTarget++;
+//                if(currentTarget > turnOrderManager.enemyTeam.size()-1){
+//                    currentTarget = 0;
+//                }
+                int checkDeadCounter = 0;
+
+                do {
+                    currentTarget++;
+                    System.out.println("CurrentIndex: " + currentTarget);
+                    if(currentTarget > turnOrderManager.enemyTeam.size()-1){
+                        currentTarget = 0;
+                    }
+
+                    checkDeadCounter++;
+                } while ((turnOrderManager.enemyTeam.get(currentTarget).health <= 0) && checkDeadCounter <= turnOrderManager.enemyTeam.size());
+
+                break;
             case KeyEvent.VK_LEFT:
-                currentTarget--;
-                if(currentTarget < 0){
-                    currentTarget = turnOrderManager.enemyTeam.size()-1;
-                }
-                        break;
+                // Left here as a reminder
+              //  currentTarget--;
+              // if(currentTarget < 0){
+               //     currentTarget = turnOrderManager.enemyTeam.size()-1;
+                //}
+
+                checkDeadCounter = 0;
+
+                do {
+                    currentTarget--;
+                    System.out.println("CurrentIndex: " + currentTarget);
+                    if(currentTarget < 0){
+                        currentTarget = turnOrderManager.enemyTeam.size()-1;
+                    }
+
+                    checkDeadCounter++;
+                } while ((turnOrderManager.enemyTeam.get(currentTarget).health <= 0) && checkDeadCounter <= turnOrderManager.enemyTeam.size());
+
+                break;
             case KeyEvent.VK_ENTER:
                 // Damage time?
                 Combatant currentPlayer = turnOrderManager.playerTeam.get(turnOrderManager.currentIndex);

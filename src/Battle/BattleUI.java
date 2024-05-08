@@ -210,7 +210,7 @@ public class BattleUI {
         int length = (int)g2.getFontMetrics().getStringBounds(currentTeam.toString(), g2).getWidth();
         UtilityTool.drawSubWindow((int)(gamePanel.screenWidth * .85) - gamePanel.tileSize/2, innerWindowY, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .45), g2);
 
-        g2.drawString(currentTeam.toString(), (int)((gamePanel.screenWidth * .85) - (gamePanel.tileSize/2)) - (int)(gamePanel.screenWidth * .12)/2 - length/2, innerWindowY + gamePanel.tileSize);
+        g2.drawString(currentTeam.toString(), (int)((gamePanel.screenWidth * .85) - (gamePanel.tileSize/2)) + (int)(gamePanel.screenWidth * .12)/2 - length/2, innerWindowY + gamePanel.tileSize/2);
 
 
         int turnGapStep =  -(gamePanel.tileSize/2);

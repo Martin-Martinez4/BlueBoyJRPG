@@ -11,6 +11,8 @@ public class Main {
         window.setResizable(false);
         window.setTitle("2D Adventure");
 
+        // Could serialize a object and pass in the state when building the game panel
+
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
         window.pack();

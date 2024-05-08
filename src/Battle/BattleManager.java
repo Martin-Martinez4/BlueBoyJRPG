@@ -111,7 +111,6 @@ public class BattleManager {
     }
 
     public void endBattle(){
-        System.out.println("This Ran:");
         gamePanel.gameState = GamePanel.gameStates.playState;
         this.turnOrderManager = new TurnOrderManager(gamePanel, this);
     }

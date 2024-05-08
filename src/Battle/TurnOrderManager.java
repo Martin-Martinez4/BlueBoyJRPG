@@ -16,7 +16,7 @@ public class TurnOrderManager {
 
     team currentTeam = team.player;
 
-    ArrayList<Combatant> playerTeam = new ArrayList<Combatant>();
+    ArrayList<Combatant> playerTeam;
     ArrayList<Combatant> enemyTeam = new ArrayList<Combatant>();
 
     // The Combatants cannot die on their attacking turn
@@ -44,9 +44,7 @@ public class TurnOrderManager {
         this.enemyTeam.add(new Slime());
         this.enemyTeam.add(new Slime());
 
-        this.playerTeam.add(new JackFrost());
-        this.playerTeam.add(new JackFrost());
-        this.playerTeam.add(new JackFrost());
+        this.playerTeam = gamePanel.playerTeam;
 
         if(currentTeam == team.player){
             this.normalTurns = playerTeam.size();
@@ -81,7 +79,13 @@ public class TurnOrderManager {
 
     //
     void handleEndTurn(){
-        checkIfTeamDied();
+        if(checkIfTeamDied(playerTeam)){
+            System.out.println("Game Over");
+        }
+        if(checkIfTeamDied(enemyTeam)){
+            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
+            gamePanel.gameState = GamePanel.gameStates.playState;
+        }
 
         if(normalTurns > 0){
             normalTurns--;
@@ -106,14 +110,12 @@ public class TurnOrderManager {
 
         do {
             currentIndex++;
-            System.out.println("CurrentIndex: " + currentIndex);
             if ((currentTeam == team.player && currentIndex >= playerTeam.size()) || (currentTeam == team.enemy && currentIndex >= enemyTeam.size())) {
                 currentIndex = 0;
             }
 
             checkDeadCounter++;
         } while (((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)) && checkDeadCounter <= cTeam.size());
-        checkIfTeamDied();
 
 
         if(normalTurns <= 0 && advantageTurns <= 0){
@@ -123,6 +125,14 @@ public class TurnOrderManager {
     }
 
     void handleSwitchTeam(){
+        if(checkIfTeamDied(playerTeam)){
+            System.out.println("Game Over");
+        }
+        if(checkIfTeamDied(enemyTeam)){
+            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
+            gamePanel.gameState = GamePanel.gameStates.playState;
+        }
+
         if(currentTeam == team.player){
             currentTeam = team.enemy;
             advantageTurns = 0;
@@ -174,14 +184,7 @@ public class TurnOrderManager {
     }
 
     // may be better if the team was passed in
-    void checkIfTeamDied(){
-        ArrayList<Combatant> cTeam;
-        if(currentTeam == team.player){
-            cTeam = playerTeam;
-        }
-        else{
-            cTeam = enemyTeam;
-        }
+    boolean checkIfTeamDied( ArrayList<Combatant> cTeam){
 
 
         int deadCount = 0;
@@ -191,19 +194,8 @@ public class TurnOrderManager {
             }
         }
 
-        if(deadCount >= cTeam.size()){
-            if(currentTeam == team.player){
-                // gameOver;
+        return  deadCount >= cTeam.size();
 
-                System.out.println("Game Over");
-                battleManager.endBattle();
-            } else if (currentTeam == team.enemy) {
-                // Battle ends
-                battleManager.endBattle();
-
-
-            }
-        }
     }
 
 

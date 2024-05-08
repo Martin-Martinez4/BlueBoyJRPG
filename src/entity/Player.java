@@ -77,9 +77,6 @@ public class Player extends Entity{
             collisionOn = false;
             gamePanel.collisionChecker.checkTile(this);
 
-            // Check object collision
-            int objectIndex = gamePanel.collisionChecker.checkObject(this, true);
-            this.pickUpObject(objectIndex);
 
             // Check NPC collision.
             int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
@@ -119,48 +116,6 @@ public class Player extends Entity{
 
     }
 
-    public void pickUpObject(int index){
-        if(index != 999){
-
-            // from Game 1
-            // Delete the object
-//            String objectName = gamePanel.objects[index].name;
-//
-//            switch(objectName){
-//                case "key":
-//                    numberOfKeys++;
-//                    gamePanel.objects[index] = null;
-//                    gamePanel.playSoundEffect(1);
-//                    gamePanel.ui.showMessage("You got a key");
-//                    System.out.println("Key: " + numberOfKeys);
-//                    break;
-//                case "door":
-//                    if(numberOfKeys > 0){
-//                        gamePanel.objects[index] = null;
-//                        numberOfKeys--;
-//                        gamePanel.ui.showMessage("You opened the door!");
-//                        gamePanel.playSoundEffect(3);
-//                    }
-//                    else{
-//                        gamePanel.ui.showMessage("You need a key!");
-//
-//                    }
-//                    System.out.println("Key: " + numberOfKeys);
-//                    break;
-//                case "boots":
-//                    this.speed += 2;
-//                    gamePanel.objects[index] = null;
-//                    gamePanel.ui.showMessage("Speed up!");
-//                    gamePanel.playSoundEffect(2);
-//                    break;
-//                case "chest":
-//                    gamePanel.ui.gameFinished = true;
-//                    gamePanel.stopMusic();
-//                    gamePanel.playSoundEffect(4);
-//                    break;
-//            }
-        }
-    }
 
     public void encounterEnemy(){
         if(encounterCoolDown <= 0){
@@ -177,7 +132,7 @@ public class Player extends Entity{
         }
         else{
             encounterCoolDown--;
-            System.out.println(encounterCoolDown);
+//            System.out.println(encounterCoolDown);
         }
     }
 
