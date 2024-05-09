@@ -1,5 +1,6 @@
 package entity;
 
+import Battle.BattleManager;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
@@ -124,6 +125,7 @@ public class Player extends Entity{
 
             if(encounter > encounterRate){
                 // Change to battle State here.
+                gamePanel.battleManager = new BattleManager(gamePanel, gamePanel.playerTeam);
                 gamePanel.gameState = GamePanel.gameStates.battleState;
                 System.out.println("Battle Would have Happened");
             }

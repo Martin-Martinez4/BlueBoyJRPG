@@ -114,7 +114,24 @@ public class TargetSelectState implements BattleState{
                 turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
                 turnOrderManager.handleEndTurn();
 
-                battleManager.pushState(new BattleDialogueState(String.format("%s attacks %s for %o damage", currentPlayer.name, turnOrderManager.enemyTeam.get(currentTarget).name, damage), battleManager, gamePanel, this));
+
+                battleManager.pushState(new BattleDialogueState(
+                        String.format( turnOrderManager.currentTeam + " %s attacks %s for %o damage", currentPlayer.name, turnOrderManager.enemyTeam.get(currentTarget).name, damage),
+                        battleManager,
+                        gamePanel,
+                        this,
+                        () -> {   // anon lambda expression
+                            battleManager.popAllExceptFirst();
+                            if(turnOrderManager.currentTeam == TurnOrderManager.team.enemy){
+                                System.out.println("added Enemy turn");
+
+                                EnemyTurnState enemyTurnState = new EnemyTurnState(battleManager, gamePanel);
+//
+
+                            }
+                        }
+                ));
+
 
                 break;
             case KeyEvent.VK_BACK_SPACE:

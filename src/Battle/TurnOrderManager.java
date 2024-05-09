@@ -83,10 +83,11 @@ public class TurnOrderManager {
             System.out.println("Game Over");
         }
         if(checkIfTeamDied(enemyTeam)){
-            // Push win battle animation
-
-            // Then do the below there
+            System.out.println("This Ran");
             battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
+            battleManager.popAllExceptFirst();
+            battleManager.g2.dispose();
+            battleManager.printStack();
             gamePanel.gameState = GamePanel.gameStates.playState;
         }
 
@@ -128,11 +129,15 @@ public class TurnOrderManager {
     }
 
     void handleSwitchTeam(){
+        System.out.println("Current Team: " + currentTeam.name() + " Current Index: " +currentIndex);
+
         if(checkIfTeamDied(playerTeam)){
             System.out.println("Game Over");
         }
         if(checkIfTeamDied(enemyTeam)){
             battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
+            battleManager.popAllExceptFirst();
+            battleManager.g2.dispose();
             gamePanel.gameState = GamePanel.gameStates.playState;
         }
 
@@ -182,6 +187,9 @@ public class TurnOrderManager {
                 checkDeadCounter++;
             } while (((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)) && checkDeadCounter <= cTeam.size());
         }
+
+        System.out.println("Current Team: " + currentTeam.name() + " Current Index: " +currentIndex);
+
 
     }
 

@@ -6,6 +6,8 @@ import main.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static main.UtilityTool.getXforCenteredText;
 
@@ -16,12 +18,15 @@ public class BattleDialogueState implements  BattleState{
     GamePanel gamePanel;
     String text;
     BattleState getPreviousBattleState;
+    Runnable nextStep;
 
-    BattleDialogueState(String text, BattleManager battleManager, GamePanel gamePanel, BattleState previousBattleState){
+    // The runnable is here because the same behavior may not be needed for all battle dialogue
+    BattleDialogueState(String text, BattleManager battleManager, GamePanel gamePanel, BattleState previousBattleState, Runnable nextStep){
         this.text = text;
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
         this.previousBattleState = previousBattleState;
+        this.nextStep = nextStep;
     }
     @Override
     public void draw(Graphics2D g2) {
@@ -46,7 +51,7 @@ public class BattleDialogueState implements  BattleState{
 
 
             case KeyEvent.VK_ENTER:
-                battleManager.popAllExceptFirst();
+                nextStep.run();
                 break;
             case KeyEvent.VK_BACK_SPACE:
                 battleManager.popAllExceptFirst();

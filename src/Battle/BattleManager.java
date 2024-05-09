@@ -106,10 +106,15 @@ public class BattleManager {
         }
     }
 
+    public BattleState peek(){
+        return battleStates.get(battleStates.size()-1);
+    }
+
     public void popAllExceptFirst(){
         while(battleStates.size() > 1){
             this.popState();
         }
+
     }
 
     public void pushState(BattleState battleState){
@@ -122,11 +127,17 @@ public class BattleManager {
     }
 
     public void popUntil(int targetHash){
-        while(this.battleStates.getLast().hashCode() != targetHash){
+        while(this.peek().hashCode() != targetHash){
             this.popState();
             if(battleStates.size() <= 1){
                 break;
             }
+        }
+    }
+
+    public void printStack(){
+        for(int i = 0; i < this.battleStates.size(); i++){
+            System.out.println(battleStates.get((battleStates.size() - 1) - i));
         }
     }
 
