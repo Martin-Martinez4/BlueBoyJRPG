@@ -33,8 +33,6 @@ public class GamePanel extends JPanel implements Runnable{
     // World Settings
     public final int  maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = this.tileSize * maxWorldCol;
-    public final int worldHeight = this.tileSize * maxWorldRow;
 
     // FPS
     int fps = 60;
@@ -73,6 +71,41 @@ public class GamePanel extends JPanel implements Runnable{
     public ArrayList<Combatant> playerTeam;
 
     public GamePanel(){
+
+
+
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(Color.black);
+        // if true all the drawing from this component will be done in an offscreen painting buffer.
+        // May increase rendering performance.
+        this.setDoubleBuffered(true);
+        keyHandler = new KeyHandler(this);
+        music = new Sound();
+        soundEffect = new Sound();
+
+        this.reset();
+
+        // Add event listener to the window
+        this.setFocusable(true);
+
+    }
+
+    public void reset(){
+        this.removeKeyListener(keyHandler);
+        tileManager = new TileManager(this);
+
+        collisionChecker = new CollisionChecker(this);
+
+        assetSetter = new AssetSetter(this);
+        ui = new UI(this);
+        player = new Player(this, keyHandler);
+        // 10 objects will be displayed at the same time
+        objects = new SuperObject[10];
+        npc = new Entity[10];
+
+
+        playerTeam = null;
+
         this.playerTeam = new ArrayList<Combatant>();
         playerTeam.add(new JackFrost());
         playerTeam.add(new Slime());
@@ -80,16 +113,9 @@ public class GamePanel extends JPanel implements Runnable{
 
         this.battleManager = new BattleManager(this, this.playerTeam);
 
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
-        // if true all the drawing from this component will be done in an offscreen painting buffer.
-        // May increase rendering performance.
-        this.setDoubleBuffered(true);
+        this.gameState = gameStates.playState;
 
-        // Add event listener to the window
         this.addKeyListener(keyHandler);
-        this.setFocusable(true);
-
 
 
     }

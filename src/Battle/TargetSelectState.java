@@ -68,6 +68,9 @@ public class TargetSelectState implements BattleState{
         TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
         int code = e.getKeyCode();
 
+        int checkDeadCounter = 0;
+
+
         switch (code){
 
             case KeyEvent.VK_RIGHT:
@@ -75,7 +78,6 @@ public class TargetSelectState implements BattleState{
 //                if(currentTarget > turnOrderManager.enemyTeam.size()-1){
 //                    currentTarget = 0;
 //                }
-                int checkDeadCounter = 0;
 
                 do {
                     currentTarget++;
@@ -94,8 +96,6 @@ public class TargetSelectState implements BattleState{
                //     currentTarget = turnOrderManager.enemyTeam.size()-1;
                 //}
 
-                checkDeadCounter = 0;
-
                 do {
                     currentTarget--;
                     if(currentTarget < 0){
@@ -112,11 +112,13 @@ public class TargetSelectState implements BattleState{
                 Combatant targetedEnemy =  turnOrderManager.enemyTeam.get(currentTarget);
                 int damage = currentPlayer.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), turnOrderManager.enemyTeam.get(currentTarget));
                 turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
+
+                TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
                 turnOrderManager.handleEndTurn();
 
 
                 battleManager.pushState(new BattleDialogueState(
-                        String.format( turnOrderManager.currentTeam + " %s attacks %s for %o damage", currentPlayer.name, turnOrderManager.enemyTeam.get(currentTarget).name, damage),
+                        String.format( curTeam + " %s attacks %s for %o damage", currentPlayer.name, targetedEnemy.name, damage),
                         battleManager,
                         gamePanel,
                         this,
@@ -125,7 +127,7 @@ public class TargetSelectState implements BattleState{
                             if(turnOrderManager.currentTeam == TurnOrderManager.team.enemy){
                                 System.out.println("added Enemy turn");
 
-                                EnemyTurnState enemyTurnState = new EnemyTurnState(battleManager, gamePanel);
+                                new EnemyTurnState(battleManager, gamePanel);
 //
 
                             }

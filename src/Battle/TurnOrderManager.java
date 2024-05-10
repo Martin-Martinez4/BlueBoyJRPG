@@ -47,11 +47,23 @@ public class TurnOrderManager {
         this.playerTeam = gamePanel.playerTeam;
 
         if(currentTeam == team.player){
-            this.normalTurns = playerTeam.size();
+            for (Combatant combatant : playerTeam) {
+
+                if (combatant.health > 0) {
+
+                    this.normalTurns++;
+                }
+            }
 
         }
         else{
-            this.normalTurns = enemyTeam.size();
+            for (Combatant combatant : enemyTeam) {
+
+                if (combatant.health > 0) {
+
+                    this.normalTurns++;
+                }
+            }
         }
     }
 
@@ -81,6 +93,8 @@ public class TurnOrderManager {
     void handleEndTurn(){
         if(checkIfTeamDied(playerTeam)){
             System.out.println("Game Over");
+            // Push game over state
+            gamePanel.reset();
         }
         if(checkIfTeamDied(enemyTeam)){
             System.out.println("This Ran");
@@ -146,18 +160,19 @@ public class TurnOrderManager {
             advantageTurns = 0;
             currentIndex = 0;
 
-            for(int i = 0; i < enemyTeam.size(); i++){
+            for (Combatant combatant : enemyTeam) {
 
-                if(enemyTeam.get(i).health > 0){
+                if (combatant.health > 0) {
 
                     normalTurns += 1;
                 }
             }
+
         }else{
             currentTeam = team.player;
-            for(int i = 0; i < playerTeam.size(); i++){
+            for (Combatant combatant : playerTeam) {
 
-                if(playerTeam.get(i).health > 0){
+                if (combatant.health > 0) {
 
                     normalTurns += 1;
                 }

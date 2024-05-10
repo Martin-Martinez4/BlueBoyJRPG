@@ -6,6 +6,8 @@ import main.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class EnemyTurnState implements BattleState {
     GamePanel gamePanel;
@@ -20,9 +22,9 @@ public class EnemyTurnState implements BattleState {
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
 
-        System.out.println("Created");
+        this.draw(battleManager.g2);
 
-        this.enemyAttackPlayer1();
+        this.enemyAttackRandomPlayer();
     }
     @Override
     public void draw(Graphics2D g2) {
@@ -39,6 +41,7 @@ public class EnemyTurnState implements BattleState {
         TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
 
         // Draw player Team
+        // Create a different method to make it clear which team member is being targeted
         BattleUI.drawPlayerTeam(turnOrderManager.playerTeam, turnOrderManager.currentTeam, turnOrderManager.currentIndex, gamePanel, g2);
 
         if(turnOrderManager.enemyTeam.get(currentTarget).health <= 0){
@@ -57,31 +60,52 @@ public class EnemyTurnState implements BattleState {
         }
 
         // Draw Target Selection
-        BattleUI.drawTargetSelect(turnOrderManager.enemyTeam, turnOrderManager.currentTeam, currentTarget, gamePanel, g2);
+        BattleUI.drawEnemyTeam(turnOrderManager.enemyTeam, turnOrderManager.currentTeam, turnOrderManager.currentIndex, gamePanel, g2);
 
         // Draw Skills
         BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
     }
 
-    public void enemyAttackPlayer1(){
+    public void enemyAttackRandomPlayer(){
+        // Make enemy pick a random enemy
         TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
 
+        ArrayList<Integer> alivePlayerIndices = new ArrayList<Integer>();
+
+        for(int i = 0; i <  turnOrderManager.playerTeam.size(); i++){
+            if(turnOrderManager.playerTeam.get(i).health > 0){
+                alivePlayerIndices.add(i);
+            }
+        }
+        int randomAlivePlayIndex;
+        if(alivePlayerIndices.isEmpty()){
+            // Game over
+            // But for now set index to 0
+            gamePanel.reset();
+            return;
+        }
+        else {
+            randomAlivePlayIndex = alivePlayerIndices.get((new Random().nextInt(alivePlayerIndices.size())));
+        }
+
+
         Combatant currentEnemy = turnOrderManager.enemyTeam.get(turnOrderManager.currentIndex);
-        Combatant targetedPlayer =  turnOrderManager.playerTeam.get(currentTarget);
+        Combatant targetedPlayer =  turnOrderManager.playerTeam.get(randomAlivePlayIndex);
         int damage = currentEnemy.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), targetedPlayer);
         targetedPlayer.health -= damage;
+
+        TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
         turnOrderManager.handleEndTurn();
 
-        System.out.println("Should happen");
         this.battleManager.pushState(new BattleDialogueState(
-                String.format(turnOrderManager.currentTeam + " %s attacks %s for %o damage", currentEnemy.name, targetedPlayer.name, damage),
+                String.format(curTeam + " %s attacks %s for %o damage", currentEnemy.name, targetedPlayer.name, damage),
                 battleManager,
                 gamePanel,
                 this,
                 () -> {
                     battleManager.popAllExceptFirst();
                     if(turnOrderManager.currentTeam == TurnOrderManager.team.enemy){
-                        EnemyTurnState enemyTurnState = new EnemyTurnState(battleManager, gamePanel);
+                        new EnemyTurnState(battleManager, gamePanel);
                     }
 
                 }

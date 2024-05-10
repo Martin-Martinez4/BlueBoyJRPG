@@ -24,7 +24,7 @@ public class ActionSelectState implements BattleState{
     enum options {
         Attack,
         Skills,
-        Guard,
+        Items,
         Pass,
         Escape
     }
@@ -142,14 +142,32 @@ public class ActionSelectState implements BattleState{
             case KeyEvent.VK_RIGHT:
                 switch (currentOption){
                     case Attack:
-                        battleManager.pushState(new TargetSelectState(new String[] { "Attack", "Skills", "Guard", "Pass", "Escape"}, currentOption.ordinal(), battleManager, gamePanel));
+                        battleManager.pushState(new TargetSelectState(new String[] { "Attack", "Skills", "Items", "Pass", "Escape"}, currentOption.ordinal(), battleManager, gamePanel));
                         break;
                     case Skills:
                         battleManager.pushState(new SkillSelectState(battleManager, gamePanel));
                         break;
                     case Pass:
-                        battleManager.turnOrderManager.handleAddAdvantageTurn();
-                        battleManager.turnOrderManager.handleEndTurn();
+                        TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
+
+                        turnOrderManager.handleAddAdvantageTurn();
+                        turnOrderManager.handleEndTurn();
+                        battleManager.pushState(new BattleDialogueState(
+                                "Pass",
+                                battleManager,
+                                gamePanel,
+                                this,
+                                () -> {   // anon lambda expression
+                                    battleManager.popAllExceptFirst();
+                                    if(turnOrderManager.currentTeam == TurnOrderManager.team.enemy){
+                                        System.out.println("added Enemy turn");
+
+                                        new EnemyTurnState(battleManager, gamePanel);
+//
+
+                                    }
+                                }
+                        ));
                         break;
                     case Escape:
                             // For now all escape attempts work

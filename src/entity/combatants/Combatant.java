@@ -2,6 +2,8 @@ package entity.combatants;
 
 import entity.skills.Skill;
 
+import java.util.Random;
+
 public class Combatant {
 
     public String name;
@@ -124,6 +126,66 @@ public class Combatant {
 
         // Target or player takes damage
         return damageAmount;
+    }
+
+    public void levelUp(){
+            // Health and MP always increase
+            // There are three stat increase chances
+            // stats have an antagonistic relationship to each other, if one stat increases it disallows the other from increasing
+            // To be implemented later, one user choice point in addition to the three
+        /*
+            Can be choosen as a player trait or something
+            HP type: 5 HP for every 1 MP
+            Balanced type: 2 HP for every 1 MP
+            MP type: 1 HP for every 1 MP
+        */
+       /*
+            Main player can always get 7 hp and 2 mp
+       */
+            int numberOfStatIncreases = 3;
+
+            while(numberOfStatIncreases > 0){
+                Random random = new Random();
+                // Pick a number from 1 to 100
+                int roll = random.nextInt(100)+1;
+                numberOfStatIncreases--;
+
+                // ugly code need to make a loop at the very least
+                int lastRange = 0;
+                if(roll <= this.growthRates.strength){
+                    this.strength += 1;
+                    continue;
+                }
+
+                lastRange += this.growthRates.strength;
+                if(roll <= this.growthRates.defense + lastRange){
+                    this.defense += 1;
+                    continue;
+                }
+
+                lastRange += this.growthRates.defense;
+                if(roll <= this.growthRates.magic + lastRange){
+                    this.magic += 1;
+                    continue;
+                }
+
+                lastRange += this.growthRates.magic;
+                if(roll <= this.growthRates.magicDefense  + lastRange){
+                    this.magicDefense += 1;
+                    continue;
+                }
+
+                lastRange += this.growthRates.magicDefense;
+
+                if(roll <= this.growthRates.luck + lastRange){
+                    this.luck += 1;
+                }
+            }
+
+            this.health += 10;
+            this.level++;
+
+
     }
 
     public void showStats(){
