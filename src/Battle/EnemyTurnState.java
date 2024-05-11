@@ -81,7 +81,7 @@ public class EnemyTurnState implements BattleState {
         if(alivePlayerIndices.isEmpty()){
             // Game over
             // But for now set index to 0
-            gamePanel.reset();
+            battleManager.pushState(new GameOver(battleManager, gamePanel));
             return;
         }
         else {
@@ -93,6 +93,13 @@ public class EnemyTurnState implements BattleState {
         Combatant targetedPlayer =  turnOrderManager.playerTeam.get(randomAlivePlayIndex);
         int damage = currentEnemy.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), targetedPlayer);
         targetedPlayer.health -= damage;
+
+        if(alivePlayerIndices.isEmpty()){
+            // Game over
+            // But for now set index to 0
+            battleManager.pushState(new GameOver(battleManager, gamePanel));
+            return;
+        }
 
         TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
         turnOrderManager.handleEndTurn();

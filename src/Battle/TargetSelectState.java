@@ -58,6 +58,10 @@ public class TargetSelectState implements BattleState{
 
         // Draw Target Selection
         BattleUI.drawTargetSelect(turnOrderManager.enemyTeam, turnOrderManager.currentTeam, currentTarget, gamePanel, g2);
+        if(turnOrderManager.currentTeam == TurnOrderManager.team.enemy){
+            BattleUI.drawEnemyTeam(turnOrderManager.enemyTeam, turnOrderManager.currentTeam, turnOrderManager.currentIndex, gamePanel, battleManager.g2);
+
+        }
 
         // Draw Skills
         BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
@@ -70,10 +74,10 @@ public class TargetSelectState implements BattleState{
 
         int checkDeadCounter = 0;
 
-
         switch (code){
 
             case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
 //                currentTarget++;
 //                if(currentTarget > turnOrderManager.enemyTeam.size()-1){
 //                    currentTarget = 0;
@@ -90,6 +94,7 @@ public class TargetSelectState implements BattleState{
 
                 break;
             case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 // Left here as a reminder
               //  currentTarget--;
               // if(currentTarget < 0){
@@ -116,7 +121,6 @@ public class TargetSelectState implements BattleState{
                 TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
                 turnOrderManager.handleEndTurn();
 
-
                 battleManager.pushState(new BattleDialogueState(
                         String.format( curTeam + " %s attacks %s for %o damage", currentPlayer.name, targetedEnemy.name, damage),
                         battleManager,
@@ -127,9 +131,10 @@ public class TargetSelectState implements BattleState{
                             if(turnOrderManager.currentTeam == TurnOrderManager.team.enemy){
                                 System.out.println("added Enemy turn");
 
+                                BattleUI.drawEnemyTeam(turnOrderManager.enemyTeam, turnOrderManager.currentTeam, turnOrderManager.currentIndex, gamePanel, battleManager.g2);
+
                                 new EnemyTurnState(battleManager, gamePanel);
 //
-
                             }
                         }
                 ));
