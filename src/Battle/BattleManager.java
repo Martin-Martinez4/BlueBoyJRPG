@@ -44,6 +44,8 @@ public class BattleManager {
         // this.keyImage = new Key(this.gamePanel).image;
         this.battleStates.add(new ActionSelectState(this, gamePanel));
 
+        this.battleStates.add(new BattleResultsState(this, gamePanel, 60, 100, new String[]{"test"}));
+
         try{
             InputStream inputStream = getClass().getResourceAsStream("/fonts/Jersey15-Regular.ttf");
             jersey15 = Font.createFont(Font.TRUETYPE_FONT, inputStream);

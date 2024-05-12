@@ -13,6 +13,7 @@ public class GameOver implements BattleState{
     BattleManager battleManager;
 
     // Create an enum of options
+    // You have to Change the enum to change the order of the options
     enum GameOverOptions{
         NewGame("New Game"),
         Quit("Quit");
@@ -94,6 +95,15 @@ public class GameOver implements BattleState{
                 currentIndex++;
                 if(currentIndex > gameOverOptionsArray.length-1){
                     currentIndex = 0;
+                }
+                break;
+            case KeyEvent.VK_ENTER:
+                if(gameOverOptionsArray[currentIndex] == GameOverOptions.NewGame){
+                    gamePanel.reset();
+                }
+                else if(gameOverOptionsArray[currentIndex] == GameOverOptions.Quit){
+                    gamePanel.quitGame();
+                    break;
                 }
                 break;
         }

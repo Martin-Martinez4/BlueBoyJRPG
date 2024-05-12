@@ -230,10 +230,7 @@ public class GamePanel extends JPanel implements Runnable{
 
             // UI: top layer
             ui.draw(g2);
-
         }
-
-
 
         if(keyHandler.debug_drawTime){
             long drawEnd = System.nanoTime();
@@ -260,5 +257,10 @@ public class GamePanel extends JPanel implements Runnable{
     public void playSoundEffect(int index){
         soundEffect.setFile(index);
         soundEffect.play();
+    }
+
+    public void quitGame(){
+        // Made into a method in case there is need to call clean up or tear down functions before quiting
+        System.exit(0);
     }
 }

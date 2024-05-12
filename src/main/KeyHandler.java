@@ -105,7 +105,7 @@ public class KeyHandler implements KeyListener {
                             gamePanel.playMusic(0);
                             break;
                         case Quit:
-                            System.exit(0);
+                            gamePanel.quitGame();
                             break;
                     }
                     break;
