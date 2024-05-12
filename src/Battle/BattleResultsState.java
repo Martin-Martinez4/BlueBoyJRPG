@@ -1,10 +1,12 @@
 package Battle;
 
+import entity.combatants.Combatant;
 import main.GamePanel;
 import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class BattleResultsState implements  BattleState{
 
@@ -82,6 +84,9 @@ public class BattleResultsState implements  BattleState{
         UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*2.5), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
         UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*3)+ (int)(gamePanel.screenHeight * .2), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
         UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*3.5)+ (int)(gamePanel.screenHeight * .2)*2, gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
+
+        ArrayList<Combatant> playerTean = battleManager.turnOrderManager.playerTeam;
+
 
 
     }

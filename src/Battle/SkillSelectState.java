@@ -24,7 +24,7 @@ public class SkillSelectState implements BattleState{
 
         BattleUI.drawMainWindow(gamePanel, g2);
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 45F));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 35F));
         BattleUI.drawSelectionMenu(gamePanel, g2);
         BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
 

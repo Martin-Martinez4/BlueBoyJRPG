@@ -9,6 +9,11 @@ public class Combatant {
     public String name;
     public int level;
     public int xp;
+
+    // total xp; still need to
+    public int totalXPForNextLevel;
+    public int maxHealth;
+    public int maxMagicPower;
     public int health;
     public int magicPower;
     public int strength;
@@ -17,6 +22,9 @@ public class Combatant {
     public int magicDefense;
     public int luck;
 
+    public int currentHealth;
+    public int currentMagicPower;
+
     public Skill[] skills;
 
     public Affinities affinities;
@@ -24,7 +32,19 @@ public class Combatant {
     public GrowthRates growthRates;
     public BaseStats baseStats;
 
-    public Combatant(String name, int level, int xp, Affinities affinities, Resistances resistances, GrowthRates growthRates, BaseStats baseStats, Skill[] skills){
+    enum ExpGrowthRate{
+        MedFast,
+        MedSlow
+    }
+
+    // Used for leveling and EXP logic
+    int baseEXP;
+    public ExpGrowthRate expGrowthRate;
+
+    // Used to determine how much xp to give when defeated
+    double expMultiplier;
+
+    public Combatant(String name, int level, int xp, Affinities affinities, Resistances resistances, GrowthRates growthRates, BaseStats baseStats, Skill[] skills, int baseEXP, ExpGrowthRate expGrowthRate){
         this.name = name;
         this.level = level;
         this.xp = xp;
@@ -36,10 +56,16 @@ public class Combatant {
 
         this.skills = skills;
 
+        this.baseEXP = baseEXP;
+        this.expGrowthRate = expGrowthRate;
+        this.expMultiplier = 1;
+
         calculateStartingStats();
+        this.health = this.maxHealth;
+        this.magicPower = this.maxMagicPower;
     }
 
-    public Combatant(String name, int level, int xp){
+    public Combatant(String name, int level, int xp, int baseEXP, ExpGrowthRate expGrowthRate){
         this.name = name;
         this.level = level;
         this.xp = xp;
@@ -49,18 +75,27 @@ public class Combatant {
         this.growthRates = new GrowthRates();
         this.baseStats = new BaseStats();
 
+        this.baseEXP = baseEXP;
+        this.expGrowthRate = expGrowthRate;
+        this.expMultiplier = 1;
+
         calculateStartingStats();
+
+        this.health = this.maxHealth;
+        this.magicPower = this.maxMagicPower;
 
     }
 
     void calculateStartingStats(){
-        this.health = this.baseStats.health + (this.level * 7);
-        this.magicPower = this.baseStats.magicPower + (this.level * 3);
+        this.maxHealth = this.baseStats.maxHealth + (this.level * 7);
+        this.maxMagicPower = this.baseStats.maxMagicPower + (this.level * 3);
         this.strength = this.baseStats.strength + (this.level * Math.round(this.level * ((float) growthRates.strength /100)));
         this.defense = this.baseStats.defense + (this.level * Math.round(this.level * ((float) growthRates.defense /100)));
         this.magic = this.baseStats.magic + (this.level * Math.round((this.level * ((float) growthRates.magic /100))));
         this.magicDefense = this.baseStats.magicDefense + Math.round((this.level * ((float) growthRates.magicDefense /100)));
         this.luck = this.baseStats.luck + (this.level * Math.round(this.level * ((float) growthRates.luck /100)));
+
+        this.totalXPForNextLevel = this.calculateExpForNextLevel();
     }
 
     boolean willAttackHit(){
@@ -182,10 +217,29 @@ public class Combatant {
                 }
             }
 
-            this.health += 10;
+            this.maxHealth += 10;
+            this.maxMagicPower += 5;
             this.level++;
+            this.totalXPForNextLevel = calculateExpForNextLevel();
+    }
 
+    public int calculateExpForNextLevel(){
+        // This involves a lot of expensive math, so it may be best to run it at certain points and  store the result
 
+        int nextLevel = this.level + 1;
+        if(this.expGrowthRate == ExpGrowthRate.MedFast){
+            return (int)Math.pow(nextLevel,  3);
+        }else{
+            // There are only two growth rates so far
+            return (int)(( (6/5) * Math.pow(nextLevel, 3) ) - ( 15 * Math.pow(nextLevel, 2) ) + ( 100 * nextLevel) - 140);
+        }
+    }
+
+    public int giveXP(double itemMultiplier){
+        return (int)(((baseEXP * this.level)/7) * itemMultiplier * this.expMultiplier);
+    }
+    public int giveXP(){
+        return (int)(((baseEXP * this.level)/7) * this.expMultiplier);
     }
 
     public void showStats(){

@@ -14,7 +14,9 @@ public class Slime extends Combatant{
                 new Resistances(.8f, .8f, .8f, .8f, .8f, .8f, 1.5f),
                 new GrowthRates(),
                 new BaseStats(),
-                new Skill[]{new Skill(Skill.type.physical, Skill.element.physical, 10)}
+                new Skill[]{new Skill(Skill.type.physical, Skill.element.physical, 10)},
+                35,
+                ExpGrowthRate.MedFast
                );
 
     }
