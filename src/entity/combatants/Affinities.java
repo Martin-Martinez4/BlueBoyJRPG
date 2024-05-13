@@ -35,7 +35,7 @@ public class Affinities {
         return force;
     }
 
-    public float getLighting() {
+    public float getLightning() {
         return lighting;
     }
     public float getDark() {

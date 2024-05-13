@@ -131,7 +131,7 @@ public class Combatant {
             case fire -> target.resistances.getFire();
             case ice -> target.resistances.getIce();
             case force -> target.resistances.getForce();
-            case lighting -> target.resistances.getLighting();
+            case lightning -> target.resistances.getLighting();
             case dark -> target.resistances.getDark();
             case light -> target.resistances.getLight();
             case physical -> target.resistances.getPhysical();
@@ -141,7 +141,7 @@ public class Combatant {
             case fire -> this.affinities.getFire();
             case ice -> this.affinities.getIce();
             case force -> this.affinities.getForce();
-            case lighting -> this.affinities.getLighting();
+            case lightning -> this.affinities.getLightning();
             case dark -> this.affinities.getDark();
             case light -> this.affinities.getLight();
             case physical -> this.affinities.getPhysical();

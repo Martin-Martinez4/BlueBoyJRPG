@@ -11,7 +11,7 @@ public class Skill {
         fire,
         ice,
         force,
-        lighting,
+        lightning,
         dark,
         light,
         physical,

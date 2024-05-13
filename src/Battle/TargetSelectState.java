@@ -115,8 +115,14 @@ public class TargetSelectState implements BattleState{
                 // Damage time?
                 Combatant currentPlayer = turnOrderManager.playerTeam.get(turnOrderManager.currentIndex);
                 Combatant targetedEnemy =  turnOrderManager.enemyTeam.get(currentTarget);
-                int damage = currentPlayer.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), turnOrderManager.enemyTeam.get(currentTarget));
+                int damage = currentPlayer.attackTarget(new Skill(Skill.type.magic, Skill.element.physical, 10), turnOrderManager.enemyTeam.get(currentTarget));
                 turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
+
+                if(turnOrderManager.getAdvantageTurn(new Skill(Skill.type.magic, Skill.element.physical, 10), turnOrderManager.enemyTeam.get(currentTarget))){
+                    turnOrderManager.handleAddAdvantageTurn();
+                }else if(turnOrderManager.giveTurnPenalty(new Skill(Skill.type.magic, Skill.element.physical, 10), turnOrderManager.enemyTeam.get(currentTarget))){
+                    turnOrderManager.handleTurnPenalty(1);
+                }
 
                 TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
                 turnOrderManager.handleEndTurn();

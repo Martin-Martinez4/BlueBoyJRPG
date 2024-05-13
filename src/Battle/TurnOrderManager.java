@@ -3,6 +3,7 @@ package Battle;
 import entity.combatants.Combatant;
 import entity.combatants.JackFrost;
 import entity.combatants.Slime;
+import entity.skills.Skill;
 import main.GamePanel;
 
 import java.util.ArrayList;
@@ -230,6 +231,33 @@ public class TurnOrderManager {
 
     }
 
+
+    public boolean getAdvantageTurn(Skill skill, Combatant target){
+        Skill.element attackElement = skill.getElement();
+
+        return switch (attackElement) {
+            case Skill.element.fire -> target.resistances.getFire() < 1;
+            case Skill.element.ice -> target.resistances.getIce() < 1;
+            case Skill.element.force -> target.resistances.getForce() < 1;
+            case Skill.element.lightning -> target.resistances.getLighting() < 1;
+            case Skill.element.dark -> target.resistances.getDark() < 1;
+            case Skill.element.light -> target.resistances.getLight() < 1;
+            case Skill.element.physical -> target.resistances.getPhysical() < 1;
+        };
+    }
+    public boolean giveTurnPenalty(Skill skill, Combatant target){
+        Skill.element attackElement = skill.getElement();
+
+        return switch (attackElement) {
+            case Skill.element.fire -> target.resistances.getFire() > 1;
+            case Skill.element.ice -> target.resistances.getIce() > 1;
+            case Skill.element.force -> target.resistances.getForce() > 1;
+            case Skill.element.lightning -> target.resistances.getLighting() > 1;
+            case Skill.element.dark -> target.resistances.getDark() > 1;
+            case Skill.element.light -> target.resistances.getLight() > 1;
+            case Skill.element.physical -> target.resistances.getPhysical() > 1;
+        };
+    }
 
     void handleAddAdvantageTurn(){
         if(!advantageTurnGivenOut && normalTurns > 0){
