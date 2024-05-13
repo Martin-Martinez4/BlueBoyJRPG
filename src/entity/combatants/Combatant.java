@@ -4,6 +4,14 @@ import entity.skills.Skill;
 
 import java.util.Random;
 
+/*
+*   baseEXP
+*       Lowest  35
+*       Low Level Max 120
+*       Mid 200
+*       Mid max 250
+*       Boss 350
+* */
 public class Combatant {
 
     public String name;
@@ -44,7 +52,9 @@ public class Combatant {
     // Used to determine how much xp to give when defeated
     double expMultiplier;
 
-    public Combatant(String name, int level, int xp, Affinities affinities, Resistances resistances, GrowthRates growthRates, BaseStats baseStats, Skill[] skills, int baseEXP, ExpGrowthRate expGrowthRate){
+    int baseMoney;
+
+    public Combatant(String name, int level, int xp, Affinities affinities, Resistances resistances, GrowthRates growthRates, BaseStats baseStats, Skill[] skills, int baseEXP, ExpGrowthRate expGrowthRate, int baseMoney){
         this.name = name;
         this.level = level;
         this.xp = xp;
@@ -60,12 +70,14 @@ public class Combatant {
         this.expGrowthRate = expGrowthRate;
         this.expMultiplier = 1;
 
+        this.baseMoney = baseMoney;
+
         calculateStartingStats();
         this.health = this.maxHealth;
         this.magicPower = this.maxMagicPower;
     }
 
-    public Combatant(String name, int level, int xp, int baseEXP, ExpGrowthRate expGrowthRate){
+    public Combatant(String name, int level, int xp, int baseEXP, ExpGrowthRate expGrowthRate, int baseMoney){
         this.name = name;
         this.level = level;
         this.xp = xp;
@@ -78,6 +90,8 @@ public class Combatant {
         this.baseEXP = baseEXP;
         this.expGrowthRate = expGrowthRate;
         this.expMultiplier = 1;
+
+        this.baseMoney = baseMoney;
 
         calculateStartingStats();
 
@@ -240,6 +254,9 @@ public class Combatant {
     }
     public int giveXP(){
         return (int)(((baseEXP * this.level)/7) * this.expMultiplier);
+    }
+    public int giveMoney(){
+        return baseMoney * this.level;
     }
 
     public void showStats(){

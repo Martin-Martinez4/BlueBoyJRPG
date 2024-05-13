@@ -15,7 +15,8 @@ public class BlueBoyDefault extends Combatant{
                 new BaseStats(),
                 new Skill[]{new Skill(Skill.type.physical, Skill.element.physical, 10)},
                 250,
-                ExpGrowthRate.MedFast
+                ExpGrowthRate.MedFast,
+                100
 
         );
 

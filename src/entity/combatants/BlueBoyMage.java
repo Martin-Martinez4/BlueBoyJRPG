@@ -15,7 +15,8 @@ public class BlueBoyMage extends Combatant{
                 new BaseStats(),
                 new Skill[]{new Skill(Skill.type.magic, Skill.element.fire, 10)},
                 250,
-                ExpGrowthRate.MedSlow
+                ExpGrowthRate.MedSlow,
+                100
         );
 
     }

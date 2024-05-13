@@ -35,6 +35,15 @@ public class BattleResultsState implements  BattleState{
         int textHeight = (int)g2.getFontMetrics().getStringBounds(text, g2).getHeight();
         int textXGap =  (int)(gamePanel.tileSize * .5);
 
+        ArrayList<Combatant> enemyTeam = battleManager.turnOrderManager.enemyTeam;
+
+        int totalEXP = 0;
+        int totalMoney = 0;
+        for (int i = 0; i < enemyTeam.size(); i++){
+            totalEXP += enemyTeam.get(i).giveXP();
+            totalMoney += enemyTeam.get(i).giveMoney();
+        }
+
 
         UtilityTool.drawSubWindow(gamePanel.tileSize, gamePanel.tileSize, gamePanel.screenWidth - gamePanel.tileSize*2, gamePanel.tileSize, g2);
         g2.drawString("You won, here is what you got.  ", gamePanel.tileSize + textXGap, gamePanel.tileSize + gamePanel.tileSize/2 + textHeight/2);
@@ -54,7 +63,7 @@ public class BattleResultsState implements  BattleState{
         UtilityTool.drawSubWindow(windowX, windowY, windowWidth, windowHeight, g2);
         g2.drawString(text, textXGap + windowX, windowY + windowHeight/2 + textHeight/2);
 
-        g2.drawString(exp+"", textXGap + windowX + windowWidth/2, windowY + windowHeight/2 + textHeight/2);
+        g2.drawString(totalEXP+"", textXGap + windowX + windowWidth/2, windowY + windowHeight/2 + textHeight/2);
 
         // Money Summary
         text = "Money:";
@@ -63,7 +72,7 @@ public class BattleResultsState implements  BattleState{
         UtilityTool.drawSubWindow(windowX, windowHeight + windowY, windowWidth, windowHeight, g2);
 
         g2.drawString(text, textXGap + windowX, windowY + (int)(windowHeight*1.5) + textHeight/2);
-        g2.drawString(money+"", textXGap + windowX + windowWidth/2, windowY + (int)(windowHeight*1.5) + textHeight/2);
+        g2.drawString(totalMoney+"", textXGap + windowX + windowWidth/2, windowY + (int)(windowHeight*1.5) + textHeight/2);
 
         // Items Summary
         text = "Items:";
@@ -81,13 +90,22 @@ public class BattleResultsState implements  BattleState{
 
         // Change to loop later
         // Player EXP and Next
-        UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*2.5), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
-        UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*3)+ (int)(gamePanel.screenHeight * .2), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
-        UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*3.5)+ (int)(gamePanel.screenHeight * .2)*2, gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
-
-        ArrayList<Combatant> playerTean = battleManager.turnOrderManager.playerTeam;
+        ArrayList<Combatant> playerTeam = battleManager.turnOrderManager.playerTeam;
 
 
+        for (int i = 0; i < playerTeam.size(); i++){
+            int screenY = (int)(gamePanel.tileSize*2.5 + (gamePanel.screenHeight * .2 *i) + gamePanel.tileSize*.5 * i);
+            UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*2.5 + (gamePanel.screenHeight * .2 *i) + gamePanel.tileSize*.5 * i), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
+            g2.drawString(battleManager.turnOrderManager.playerTeam.get(i).name, gamePanel.screenWidth/2 + textXGap, screenY + gamePanel.tileSize);
+
+            g2.drawString("EXP: ", gamePanel.screenWidth/2 + textXGap, (int)(screenY + gamePanel.tileSize * 1.5));
+            g2.drawString(totalEXP/playerTeam.size()+"", gamePanel.screenWidth/2 + textXGap + windowX, (int)(screenY + gamePanel.tileSize * 1.5));
+
+            g2.drawString("Next: ", gamePanel.screenWidth/2 + textXGap, screenY + gamePanel.tileSize*2);
+            g2.drawString(playerTeam.get(i).totalXPForNextLevel - playerTeam.get(i).xp +"", gamePanel.screenWidth/2 + textXGap + windowX, screenY + gamePanel.tileSize*2);
+        }
+
+        // do an animation where the exp is allocated a bit at a time.  Can also keep track of how many level ups occur
 
     }
 
