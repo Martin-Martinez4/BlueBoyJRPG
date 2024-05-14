@@ -2,7 +2,7 @@ package entity.skills;
 
 public class Skill {
 
-    static public enum type{
+     public enum type{
         physical,
         magic
     }
@@ -17,16 +17,21 @@ public class Skill {
         physical,
     }
 
+    String name;
     type type;
     element element;
     int power;
+    int mpCost;
 
-   public Skill(type type, element element, int power){
+   public Skill(String name, type type, element element, int power, int mpCost){
+       this.name = name;
         this.type = type;
         this.element = element;
         this.power = power;
+        this.mpCost = mpCost;
     }
 
+    public String getName(){return name;}
     public Skill.type getType() {
         return type;
     }
@@ -37,5 +42,8 @@ public class Skill {
 
     public int getPower() {
         return power;
+    }
+    public int getMpCost() {
+        return mpCost;
     }
 }

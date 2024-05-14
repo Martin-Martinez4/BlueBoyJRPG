@@ -1,5 +1,6 @@
 package Battle;
 
+import entity.skills.Skill;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -11,12 +12,13 @@ public class SkillSelectState implements BattleState{
     BattleManager battleManager;
 
     // This will be dynamic and will be an Array/List of skill objects
-    String[] skills = {"Fire", "Water", "Force", "Thunder", "Light", "Light", "Light"};
+    Skill[] skills;
     int currentSkill = 0;
 
-    SkillSelectState(BattleManager battleManager, GamePanel gamePanel){
+    SkillSelectState(BattleManager battleManager, GamePanel gamePanel, Skill[] skills){
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
+        this.skills = skills;
     }
 
     @Override
@@ -26,6 +28,7 @@ public class SkillSelectState implements BattleState{
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 35F));
         BattleUI.drawSelectionMenu(gamePanel, g2);
+
         BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
 
         BattleUI.drawTurnDisplay(battleManager.turnOrderManager.currentTeam, battleManager.turnOrderManager.normalTurns, battleManager.turnOrderManager.advantageTurns, gamePanel, g2);

@@ -120,6 +120,8 @@ public class ActionSelectState implements BattleState{
     public void handleInputs(KeyEvent e){
         int code = e.getKeyCode();
 
+        TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
+
         switch (code){
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
@@ -145,10 +147,9 @@ public class ActionSelectState implements BattleState{
                         battleManager.pushState(new TargetSelectState(new String[] { "Attack", "Skills", "Items", "Pass", "Escape"}, currentOption.ordinal(), battleManager, gamePanel));
                         break;
                     case Skills:
-                        battleManager.pushState(new SkillSelectState(battleManager, gamePanel));
+                        battleManager.pushState(new SkillSelectState(battleManager, gamePanel, turnOrderManager.playerTeam.get(turnOrderManager.currentIndex).skills));
                         break;
                     case Pass:
-                        TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
 
                         turnOrderManager.handleAddAdvantageTurn();
                         turnOrderManager.handleEndTurn();

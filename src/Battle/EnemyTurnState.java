@@ -91,7 +91,7 @@ public class EnemyTurnState implements BattleState {
 
         Combatant currentEnemy = turnOrderManager.enemyTeam.get(turnOrderManager.currentIndex);
         Combatant targetedPlayer =  turnOrderManager.playerTeam.get(randomAlivePlayIndex);
-        int damage = currentEnemy.attackTarget(new Skill(Skill.type.magic, Skill.element.fire, 10), targetedPlayer);
+        int damage = currentEnemy.attackTarget(currentEnemy.skills[0], targetedPlayer);
         targetedPlayer.health -= damage;
 
         if(alivePlayerIndices.isEmpty()){

@@ -98,12 +98,9 @@ public class TurnOrderManager {
             battleManager.pushState(new GameOver(battleManager, gamePanel));
         }
         if(checkIfTeamDied(enemyTeam)){
-            System.out.println("This Ran");
-            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
-            battleManager.popAllExceptFirst();
-            battleManager.g2.dispose();
-            battleManager.printStack();
-            gamePanel.gameState = GamePanel.gameStates.playState;
+            battleManager.pushState(new BattleResultsState(battleManager, gamePanel, enemyTeam));
+            return;
+
         }
 
         if(normalTurns > 0){
@@ -126,15 +123,19 @@ public class TurnOrderManager {
 
         // Check if the next would be dead and skip over
         int checkDeadCounter = 0;
+        currentIndex++;
+        if ((currentTeam == team.player && currentIndex >= playerTeam.size()) || (currentTeam == team.enemy && currentIndex >= enemyTeam.size())) {
+            currentIndex = 0;
+        }
 
-        do {
+        while (((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)) && checkDeadCounter <= cTeam.size()) {
             currentIndex++;
             if ((currentTeam == team.player && currentIndex >= playerTeam.size()) || (currentTeam == team.enemy && currentIndex >= enemyTeam.size())) {
                 currentIndex = 0;
             }
 
             checkDeadCounter++;
-        } while (((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)) && checkDeadCounter <= cTeam.size());
+        }
 
 
         if(normalTurns <= 0 && advantageTurns <= 0){
@@ -151,16 +152,14 @@ public class TurnOrderManager {
             return;
         }
         if(checkIfTeamDied(enemyTeam)){
-            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
-            battleManager.popAllExceptFirst();
-            battleManager.g2.dispose();
-            gamePanel.gameState = GamePanel.gameStates.playState;
+            battleManager.pushState(new BattleResultsState(battleManager, gamePanel, enemyTeam));
+            return;
         }
 
+        advantageTurns = 0;
+        currentIndex = 0;
         if(currentTeam == team.player){
             currentTeam = team.enemy;
-            advantageTurns = 0;
-            currentIndex = 0;
 
             for (Combatant combatant : enemyTeam) {
 
@@ -195,14 +194,14 @@ public class TurnOrderManager {
 
         if((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)){
 
-            do {
+            while (((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)) && checkDeadCounter <= cTeam.size()) {
                 currentIndex++;
                 if ((currentTeam == team.player && currentIndex >= playerTeam.size()) || (currentTeam == team.enemy && currentIndex >= enemyTeam.size())) {
                     currentIndex = 0;
                 }
 
                 checkDeadCounter++;
-            } while (((currentTeam == team.player && playerTeam.get(currentIndex).health <= 0) || (currentTeam == team.enemy && enemyTeam.get(currentIndex).health <= 0)) && checkDeadCounter <= cTeam.size());
+            }
         }
 
         if(checkIfTeamDied(playerTeam)){
@@ -236,26 +235,26 @@ public class TurnOrderManager {
         Skill.element attackElement = skill.getElement();
 
         return switch (attackElement) {
-            case Skill.element.fire -> target.resistances.getFire() < 1;
-            case Skill.element.ice -> target.resistances.getIce() < 1;
-            case Skill.element.force -> target.resistances.getForce() < 1;
-            case Skill.element.lightning -> target.resistances.getLighting() < 1;
-            case Skill.element.dark -> target.resistances.getDark() < 1;
-            case Skill.element.light -> target.resistances.getLight() < 1;
-            case Skill.element.physical -> target.resistances.getPhysical() < 1;
+            case fire -> target.resistances.getFire() < 1;
+            case ice -> target.resistances.getIce() < 1;
+            case force -> target.resistances.getForce() < 1;
+            case lightning -> target.resistances.getLighting() < 1;
+            case dark -> target.resistances.getDark() < 1;
+            case light -> target.resistances.getLight() < 1;
+            case physical -> target.resistances.getPhysical() < 1;
         };
     }
     public boolean giveTurnPenalty(Skill skill, Combatant target){
         Skill.element attackElement = skill.getElement();
 
         return switch (attackElement) {
-            case Skill.element.fire -> target.resistances.getFire() > 1;
-            case Skill.element.ice -> target.resistances.getIce() > 1;
-            case Skill.element.force -> target.resistances.getForce() > 1;
-            case Skill.element.lightning -> target.resistances.getLighting() > 1;
-            case Skill.element.dark -> target.resistances.getDark() > 1;
-            case Skill.element.light -> target.resistances.getLight() > 1;
-            case Skill.element.physical -> target.resistances.getPhysical() > 1;
+            case fire -> target.resistances.getFire() > 1;
+            case ice -> target.resistances.getIce() > 1;
+            case force -> target.resistances.getForce() > 1;
+            case lightning -> target.resistances.getLighting() > 1;
+            case dark -> target.resistances.getDark() > 1;
+            case light -> target.resistances.getLight() > 1;
+            case physical -> target.resistances.getPhysical() > 1;
         };
     }
 

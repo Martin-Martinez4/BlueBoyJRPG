@@ -7,18 +7,26 @@ import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class TargetSelectState implements BattleState{
     GamePanel gamePanel;
     BattleManager battleManager;
 
-    String[] skills;
+    Skill[] skills;
+    String[] actions;
     int currentSkill;
 
     int currentTarget = 0;
 
-    public TargetSelectState(String[] skills, int currentSkill, BattleManager battleManager, GamePanel gamePanel){
+    public TargetSelectState(Skill[] skills, int currentSkill, BattleManager battleManager, GamePanel gamePanel){
         this.skills = skills;
+        this.currentSkill = currentSkill;
+        this.battleManager = battleManager;
+        this.gamePanel = gamePanel;
+    }
+    public TargetSelectState(String[] actions, int currentSkill, BattleManager battleManager, GamePanel gamePanel){
+        this.actions = actions;
         this.currentSkill = currentSkill;
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
@@ -30,7 +38,6 @@ public class TargetSelectState implements BattleState{
         BattleUI.drawMainWindow(gamePanel, g2);
 
         BattleUI.drawSelectionMenu(gamePanel, g2);
-        BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
 
         BattleUI.drawTurnDisplay(battleManager.turnOrderManager.currentTeam, battleManager.turnOrderManager.normalTurns, battleManager.turnOrderManager.advantageTurns, gamePanel, g2);
 
@@ -63,8 +70,16 @@ public class TargetSelectState implements BattleState{
 
         }
 
+        System.out.println(Arrays.toString(this.actions));
         // Draw Skills
-        BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
+        if(this.actions == null){
+
+            BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
+        } else if (this.skills == null) {
+            BattleUI.drawSelectionSkills(actions, currentSkill, gamePanel, g2);
+
+
+        }
     }
 
     @Override
@@ -115,17 +130,21 @@ public class TargetSelectState implements BattleState{
                 // Damage time?
                 Combatant currentPlayer = turnOrderManager.playerTeam.get(turnOrderManager.currentIndex);
                 Combatant targetedEnemy =  turnOrderManager.enemyTeam.get(currentTarget);
-                int damage = currentPlayer.attackTarget(new Skill(Skill.type.magic, Skill.element.physical, 10), turnOrderManager.enemyTeam.get(currentTarget));
+                int damage = currentPlayer.attackTarget(currentPlayer.skills[currentSkill], turnOrderManager.enemyTeam.get(currentTarget));
                 turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
 
-                if(turnOrderManager.getAdvantageTurn(new Skill(Skill.type.magic, Skill.element.physical, 10), turnOrderManager.enemyTeam.get(currentTarget))){
+                if(turnOrderManager.getAdvantageTurn(currentPlayer.skills[currentSkill], turnOrderManager.enemyTeam.get(currentTarget))){
                     turnOrderManager.handleAddAdvantageTurn();
-                }else if(turnOrderManager.giveTurnPenalty(new Skill(Skill.type.magic, Skill.element.physical, 10), turnOrderManager.enemyTeam.get(currentTarget))){
+                }else if(turnOrderManager.giveTurnPenalty(currentPlayer.skills[currentSkill], turnOrderManager.enemyTeam.get(currentTarget))){
                     turnOrderManager.handleTurnPenalty(1);
                 }
 
                 TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
                 turnOrderManager.handleEndTurn();
+
+                if(turnOrderManager.checkIfTeamDied(turnOrderManager.enemyTeam)){
+                    return;
+                }
 
                 battleManager.pushState(new BattleDialogueState(
                         String.format( curTeam + " %s attacks %s for %o damage", currentPlayer.name, targetedEnemy.name, damage),

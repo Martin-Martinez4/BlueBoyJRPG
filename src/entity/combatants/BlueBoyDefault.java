@@ -1,9 +1,9 @@
 package entity.combatants;
 
 import entity.skills.Skill;
+import entity.skills.physical.Smack;
 
 public class BlueBoyDefault extends Combatant{
-    Skill[] basicSkills =  new Skill[]{new Skill(Skill.type.physical, Skill.element.physical, 10)};
     public BlueBoyDefault(){
         super(
                 "Blue Boy",
@@ -13,7 +13,7 @@ public class BlueBoyDefault extends Combatant{
                 new Resistances(),
                 new GrowthRates(),
                 new BaseStats(),
-                new Skill[]{new Skill(Skill.type.physical, Skill.element.physical, 10)},
+                new Skill[]{new Smack()},
                 250,
                 ExpGrowthRate.MedFast,
                 100

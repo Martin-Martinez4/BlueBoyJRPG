@@ -4,9 +4,7 @@ import Battle.BattleManager;
 import Battle.TurnOrderManager;
 import entity.Entity;
 import entity.Player;
-import entity.combatants.Combatant;
-import entity.combatants.JackFrost;
-import entity.combatants.Slime;
+import entity.combatants.*;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -56,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
     // 10 objects will be displayed at the same time
     public SuperObject[] objects = new SuperObject[10];
     public Entity[] npc = new Entity[10];
+    public int money = 100;
 
     // Game state
     public enum gameStates{
@@ -107,9 +106,9 @@ public class GamePanel extends JPanel implements Runnable{
         playerTeam = null;
 
         this.playerTeam = new ArrayList<Combatant>();
+        playerTeam.add(new BlueBoyMage());
         playerTeam.add(new JackFrost());
-        playerTeam.add(new Slime());
-        playerTeam.add(new Slime());
+        playerTeam.add(new JackFrost());
 
         this.battleManager = new BattleManager(this, this.playerTeam);
 

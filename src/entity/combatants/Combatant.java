@@ -16,7 +16,7 @@ public class Combatant {
 
     public String name;
     public int level;
-    public int xp;
+    public int exp;
 
     // total xp; still need to
     public int totalXPForNextLevel;
@@ -54,10 +54,10 @@ public class Combatant {
 
     int baseMoney;
 
-    public Combatant(String name, int level, int xp, Affinities affinities, Resistances resistances, GrowthRates growthRates, BaseStats baseStats, Skill[] skills, int baseEXP, ExpGrowthRate expGrowthRate, int baseMoney){
+    public Combatant(String name, int level, int exp, Affinities affinities, Resistances resistances, GrowthRates growthRates, BaseStats baseStats, Skill[] skills, int baseEXP, ExpGrowthRate expGrowthRate, int baseMoney){
         this.name = name;
         this.level = level;
-        this.xp = xp;
+        this.exp = exp;
 
         this.affinities = affinities;
         this.resistances = resistances;
@@ -77,10 +77,10 @@ public class Combatant {
         this.magicPower = this.maxMagicPower;
     }
 
-    public Combatant(String name, int level, int xp, int baseEXP, ExpGrowthRate expGrowthRate, int baseMoney){
+    public Combatant(String name, int level, int exp, int baseEXP, ExpGrowthRate expGrowthRate, int baseMoney){
         this.name = name;
         this.level = level;
-        this.xp = xp;
+        this.exp = exp;
 
         this.affinities = new Affinities();
         this.resistances = new Resistances();
@@ -173,11 +173,13 @@ public class Combatant {
 
         }
 
+        this.magicPower -= skill.getMpCost();
+
         // Target or player takes damage
         return damageAmount;
     }
 
-    public void levelUp(){
+    public void levelUp(int levelsToAdd){
             // Health and MP always increase
             // There are three stat increase chances
             // stats have an antagonistic relationship to each other, if one stat increases it disallows the other from increasing
@@ -191,6 +193,9 @@ public class Combatant {
        /*
             Main player can always get 7 hp and 2 mp
        */
+        int levelsAdded = 0;
+        while(levelsAdded < levelsToAdd){
+
             int numberOfStatIncreases = 3;
 
             while(numberOfStatIncreases > 0){
@@ -235,6 +240,8 @@ public class Combatant {
             this.maxMagicPower += 5;
             this.level++;
             this.totalXPForNextLevel = calculateExpForNextLevel();
+            levelsAdded++;
+        }
     }
 
     public int calculateExpForNextLevel(){
@@ -247,6 +254,10 @@ public class Combatant {
             // There are only two growth rates so far
             return (int)(( (6/5) * Math.pow(nextLevel, 3) ) - ( 15 * Math.pow(nextLevel, 2) ) + ( 100 * nextLevel) - 140);
         }
+    }
+
+    public void addExp(int expAmount){
+        this.exp += expAmount;
     }
 
     public int giveXP(double itemMultiplier){

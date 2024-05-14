@@ -13,19 +13,49 @@ public class BattleResultsState implements  BattleState{
     GamePanel gamePanel;
     BattleManager battleManager;
 
-    int exp;
-    int money;
-    String[] items;
+    ArrayList<Combatant> enemyTeam;
 
-    public BattleResultsState(BattleManager battleManager, GamePanel gamePanel, int exp, int money, String[] items){
+    boolean allocated = false;
+
+    // Get items function later
+     String[] items = new String[]{"test"};
+
+     int[] toNextLV = new int[3];
+     int totalEXP = 0;
+     int totalMoney = 0;
+
+    public BattleResultsState(BattleManager battleManager, GamePanel gamePanel, ArrayList<Combatant> enemyTeam){
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
-        this.exp = exp;
-        this.money = money;
-        this.items = items;
+
+        this.enemyTeam = enemyTeam;
+
+        // All this should be in a method
+        ArrayList<Combatant> playerTeam = battleManager.turnOrderManager.playerTeam;
+        for (int i = 0; i < playerTeam.size(); i++){
+            toNextLV[i] = playerTeam.get(i).totalXPForNextLevel - playerTeam.get(i).exp;
+
+        }
+
+        for (int i = 0; i < enemyTeam.size(); i++){
+            totalEXP += enemyTeam.get(i).giveXP();
+            totalMoney += enemyTeam.get(i).giveMoney();
+        }
+
+        for (int i = 0; i < playerTeam.size(); i++){
+            playerTeam.get(i).addExp(totalEXP/enemyTeam.size());
+        }
+
+        for (int i = 0; i < playerTeam.size(); i++){
+            while(playerTeam.get(i).totalXPForNextLevel - playerTeam.get(i).exp < 0){
+                playerTeam.get(i).levelUp(1);
+            }
+        }
+
     }
     @Override
     public void draw(Graphics2D g2) {
+        System.out.println("is running");
         // Shows how much gold and items the party got
         // Show how many xp points each party members got
         BattleUI.drawMainWindow(gamePanel, g2);
@@ -35,14 +65,6 @@ public class BattleResultsState implements  BattleState{
         int textHeight = (int)g2.getFontMetrics().getStringBounds(text, g2).getHeight();
         int textXGap =  (int)(gamePanel.tileSize * .5);
 
-        ArrayList<Combatant> enemyTeam = battleManager.turnOrderManager.enemyTeam;
-
-        int totalEXP = 0;
-        int totalMoney = 0;
-        for (int i = 0; i < enemyTeam.size(); i++){
-            totalEXP += enemyTeam.get(i).giveXP();
-            totalMoney += enemyTeam.get(i).giveMoney();
-        }
 
 
         UtilityTool.drawSubWindow(gamePanel.tileSize, gamePanel.tileSize, gamePanel.screenWidth - gamePanel.tileSize*2, gamePanel.tileSize, g2);
@@ -92,25 +114,43 @@ public class BattleResultsState implements  BattleState{
         // Player EXP and Next
         ArrayList<Combatant> playerTeam = battleManager.turnOrderManager.playerTeam;
 
+            for (int i = 0; i < playerTeam.size(); i++){
+                int screenY = (int)(gamePanel.tileSize*2.5 + (gamePanel.screenHeight * .2 *i) + gamePanel.tileSize*.5 * i);
+                UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*2.5 + (gamePanel.screenHeight * .2 *i) + gamePanel.tileSize*.5 * i), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
+                g2.drawString(battleManager.turnOrderManager.playerTeam.get(i).name + " "+ battleManager.turnOrderManager.playerTeam.get(i).level, gamePanel.screenWidth/2 + textXGap, screenY + gamePanel.tileSize);
 
-        for (int i = 0; i < playerTeam.size(); i++){
-            int screenY = (int)(gamePanel.tileSize*2.5 + (gamePanel.screenHeight * .2 *i) + gamePanel.tileSize*.5 * i);
-            UtilityTool.drawSubWindow(gamePanel.screenWidth/2, (int)(gamePanel.tileSize*2.5 + (gamePanel.screenHeight * .2 *i) + gamePanel.tileSize*.5 * i), gamePanel.screenWidth/3, (int)(gamePanel.screenHeight * .2), g2);
-            g2.drawString(battleManager.turnOrderManager.playerTeam.get(i).name, gamePanel.screenWidth/2 + textXGap, screenY + gamePanel.tileSize);
+                g2.drawString("EXP: ", gamePanel.screenWidth/2 + textXGap, (int)(screenY + gamePanel.tileSize * 1.5));
+                g2.drawString(totalEXP/playerTeam.size()+"", gamePanel.screenWidth/2 + textXGap + windowX, (int)(screenY + gamePanel.tileSize * 1.5));
 
-            g2.drawString("EXP: ", gamePanel.screenWidth/2 + textXGap, (int)(screenY + gamePanel.tileSize * 1.5));
-            g2.drawString(totalEXP/playerTeam.size()+"", gamePanel.screenWidth/2 + textXGap + windowX, (int)(screenY + gamePanel.tileSize * 1.5));
-
-            g2.drawString("Next: ", gamePanel.screenWidth/2 + textXGap, screenY + gamePanel.tileSize*2);
-            g2.drawString(playerTeam.get(i).totalXPForNextLevel - playerTeam.get(i).xp +"", gamePanel.screenWidth/2 + textXGap + windowX, screenY + gamePanel.tileSize*2);
-        }
+                g2.drawString("Next: ", gamePanel.screenWidth/2 + textXGap, screenY + gamePanel.tileSize*2);
+                g2.drawString(playerTeam.get(i).totalXPForNextLevel - playerTeam.get(i).exp +"", gamePanel.screenWidth/2 + textXGap + windowX, screenY + gamePanel.tileSize*2);
+            }
 
         // do an animation where the exp is allocated a bit at a time.  Can also keep track of how many level ups occur
+
+        // allocate exp to team members
+
+
+
+        // for each member while total exp next exp add level
+        // do level allocation in another state
+
 
     }
 
     @Override
     public void handleInputs(KeyEvent e) {
+        int code = e.getKeyCode();
+
+
+        switch(code){
+            case KeyEvent.VK_ENTER:
+
+            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
+            battleManager.popAllExceptFirst();
+            battleManager.g2.dispose();
+            gamePanel.gameState = GamePanel.gameStates.playState;
+        }
 
     }
 }

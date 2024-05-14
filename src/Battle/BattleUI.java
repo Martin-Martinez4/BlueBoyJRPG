@@ -1,6 +1,7 @@
 package Battle;
 
 import entity.combatants.Combatant;
+import entity.skills.Skill;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -23,13 +24,15 @@ public class BattleUI {
         int width = gamePanel.screenWidth - (gamePanel.tileSize);
         int x = gamePanel.screenWidth - width - gamePanel.tileSize/2;
 
-        int innnerWindowX = x + (width - ((int)(gamePanel.screenWidth * .85)))/2;
+        int innnerWindowX = x + (width - ((int)(gamePanel.screenWidth)))/2 + gamePanel.tileSize;
         int innerWindowY = (int)(gamePanel.screenHeight * .45);
-                UtilityTool.drawSubWindow( innnerWindowX, innerWindowY, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .45), g2);
+        UtilityTool.drawSubWindow( innnerWindowX, innerWindowY, (int)(gamePanel.screenWidth * .12), (int)(gamePanel.screenHeight * .45), g2);
 
     }
 
     static void drawSelectionOptions(ActionSelectState.options currentOption, GamePanel gamePanel, Graphics2D g2){
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+
         int width = gamePanel.screenWidth - (gamePanel.tileSize);
         int x = gamePanel.screenWidth - width - gamePanel.tileSize/2;
         int innnerWindowX = x + (width - ((int)(gamePanel.screenWidth * .85)))/2;
@@ -42,15 +45,15 @@ public class BattleUI {
         for (ActionSelectState.options option : ActionSelectState.options.values()) {
 
             if(currentOption == option){
-                stringX = (int)(gamePanel.screenWidth * .12) - innnerWindowX/2 + gamePanel.tileSize/3;
+                stringX = (int)(gamePanel.screenWidth * .10) - innnerWindowX/2 + gamePanel.tileSize/3;
 
             }else{
 
-                stringX = (int)(gamePanel.screenWidth * .12) - innnerWindowX/2;
+                stringX = (int)(gamePanel.screenWidth * .10) - innnerWindowX/2;
             }
 
             if(currentOption == option){
-                g2.drawString(">", (int)(gamePanel.screenWidth * .12) - innnerWindowX/2, innerWindowY + gamePanel.tileSize * (i+1));
+                g2.drawString(">", (int)(gamePanel.screenWidth * .10) - innnerWindowX/2, innerWindowY + gamePanel.tileSize * (i+1));
             }
 
             g2.drawString(String.valueOf(option), stringX, innerWindowY + gamePanel.tileSize * (i+1));
@@ -58,7 +61,9 @@ public class BattleUI {
         }
     }
 
-    static  void drawSelectionSkills(String[] skills, int currentSkill, GamePanel gamePanel, Graphics2D g2){
+    static  void drawSelectionSkills(Skill[] skills, int currentSkill, GamePanel gamePanel, Graphics2D g2){
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+
 
         int width = gamePanel.screenWidth - (gamePanel.tileSize);
         int x = gamePanel.screenWidth - width - gamePanel.tileSize/2;
@@ -70,23 +75,53 @@ public class BattleUI {
         for(int i = 0; i < skills.length && i < 5; i++){
 
             if(i == currentSkill){
-                stringX = (int)(gamePanel.screenWidth * .12) - innnerWindowX/2 + gamePanel.tileSize/3;
+                stringX = (int)(gamePanel.screenWidth * .10) - innnerWindowX/2 + gamePanel.tileSize/3;
 
             }else{
 
-                stringX = (int)(gamePanel.screenWidth * .12) - innnerWindowX/2;
+                stringX = (int)(gamePanel.screenWidth * .10) - innnerWindowX/2;
             }
 
             if(i == currentSkill ){
-                g2.drawString(">", (int)(gamePanel.screenWidth * .12) - innnerWindowX/2, innerWindowY + gamePanel.tileSize * (i+1));
+                g2.drawString(">", (int)(gamePanel.screenWidth * .10) - innnerWindowX/2, innerWindowY + gamePanel.tileSize * (i+1));
             }
 
-            g2.drawString(skills[i], stringX, innerWindowY + gamePanel.tileSize * (i+1));
+            g2.drawString(skills[i].getName(), stringX, innerWindowY + gamePanel.tileSize * (i+1));
+            g2.drawString(" " + skills[i].getMpCost(), stringX + gamePanel.tileSize, innerWindowY + gamePanel.tileSize * (i+1));
+
+        }
+    }
+    static  void drawSelectionSkills(String[] actions, int currentSkill, GamePanel gamePanel, Graphics2D g2){
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+
+        int width = gamePanel.screenWidth - (gamePanel.tileSize);
+        int x = gamePanel.screenWidth - width - gamePanel.tileSize/2;
+        int innnerWindowX = x + (width - ((int)(gamePanel.screenWidth * .85)))/2;
+        int innerWindowY = (int)(gamePanel.screenHeight * .45);
+
+        int stringX;
+
+        for(int i = 0; i < actions.length && i < 5; i++){
+
+            if(i == currentSkill){
+                stringX = (int)(gamePanel.screenWidth * .10) - innnerWindowX/2 + gamePanel.tileSize/3;
+
+            }else{
+
+                stringX = (int)(gamePanel.screenWidth * .10) - innnerWindowX/2;
+            }
+
+            if(i == currentSkill ){
+                g2.drawString(">", (int)(gamePanel.screenWidth * .10) - innnerWindowX/2, innerWindowY + gamePanel.tileSize * (i+1));
+            }
+
+            g2.drawString(actions[i], stringX, innerWindowY + gamePanel.tileSize * (i+1));
 
         }
     }
 
     static void drawPlayerTeam(ArrayList<Combatant> playerTeam, TurnOrderManager.team currentTeam, int currentIndex, GamePanel gamePanel, Graphics2D g2){
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
 
         int width = gamePanel.screenWidth - (gamePanel.tileSize);
         int x = gamePanel.screenWidth - width - gamePanel.tileSize/2;
@@ -127,6 +162,8 @@ public class BattleUI {
     }
 
     static void drawEnemyTeam(ArrayList<Combatant> enemyTeam, TurnOrderManager.team currentTeam, int currentIndex, GamePanel gamePanel, Graphics2D g2){
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+
         int width = gamePanel.screenWidth - (gamePanel.tileSize);
         int x = gamePanel.screenWidth - width - gamePanel.tileSize/2;
         int innnerWindowX = x + (width - ((int)(gamePanel.screenWidth * .85)))/2;
