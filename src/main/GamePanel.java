@@ -5,6 +5,7 @@ import Battle.TurnOrderManager;
 import entity.Entity;
 import entity.Player;
 import entity.combatants.*;
+import entity.skills.ice.Frost;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -56,6 +57,9 @@ public class GamePanel extends JPanel implements Runnable{
     public Entity[] npc = new Entity[10];
     public int money = 100;
 
+    // Add as set of five enemy teams that can be choosen at random
+    public ArrayList<ArrayList<Combatant>> enemyTeamPool = new ArrayList<ArrayList<Combatant>>();
+
     // Game state
     public enum gameStates{
         titleState,
@@ -72,6 +76,7 @@ public class GamePanel extends JPanel implements Runnable{
     public GamePanel(){
 
 
+        this.buildEnemyTeamPool();
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -86,6 +91,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         // Add event listener to the window
         this.setFocusable(true);
+
 
     }
 
@@ -261,5 +267,33 @@ public class GamePanel extends JPanel implements Runnable{
     public void quitGame(){
         // Made into a method in case there is need to call clean up or tear down functions before quiting
         System.exit(0);
+    }
+
+    void buildEnemyTeamPool(){
+        ArrayList<Combatant> slimeTeam = new ArrayList<>();
+        slimeTeam.add(new Slime());
+        slimeTeam.add(new Slime());
+        slimeTeam.add(new Slime());
+
+        ArrayList<Combatant> frostTeam = new ArrayList<>();
+        frostTeam.add(new JackFrost());
+        frostTeam.add(new JackFrost());
+        frostTeam.add(new JackFrost());
+
+        ArrayList<Combatant> frostSlimeTeam = new ArrayList<>();
+        frostSlimeTeam.add(new JackFrost());
+        frostSlimeTeam.add(new Slime());
+        frostSlimeTeam.add(new JackFrost());
+
+        ArrayList<Combatant> slimeFrostTeam = new ArrayList<>();
+        slimeFrostTeam.add(new Slime());
+        slimeFrostTeam.add(new JackFrost());
+        slimeFrostTeam.add(new Slime());
+
+        this.enemyTeamPool.add(slimeFrostTeam);
+        this.enemyTeamPool.add(frostSlimeTeam);
+        this.enemyTeamPool.add(slimeTeam);
+        this.enemyTeamPool.add(frostTeam);
+
     }
 }

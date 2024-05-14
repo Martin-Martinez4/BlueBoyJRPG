@@ -7,6 +7,8 @@ import entity.skills.Skill;
 import main.GamePanel;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 // Idea: battle managers gets all turn information from TurnOrderManager
 public class TurnOrderManager {
 
@@ -41,9 +43,10 @@ public class TurnOrderManager {
         this.gamePanel = gamePanel;
         this.battleManager = battleManager;
 
-        this.enemyTeam.add(new Slime());
-        this.enemyTeam.add(new Slime());
-        this.enemyTeam.add(new Slime());
+        setEnemyTeam();
+//        this.enemyTeam.add(new Slime());
+//        this.enemyTeam.add(new Slime());
+//        this.enemyTeam.add(new Slime());
 
         this.playerTeam = gamePanel.playerTeam;
 
@@ -85,8 +88,9 @@ public class TurnOrderManager {
 
     }
 
-    public void setEnemyTeam(ArrayList<Combatant> enemyTeam){
-        this.enemyTeam = enemyTeam;
+    public void setEnemyTeam(){
+        Random enemyIndex = new Random();
+        this.enemyTeam = gamePanel.enemyTeamPool.get(enemyIndex.nextInt(gamePanel.enemyTeamPool.size()));
 
     }
 

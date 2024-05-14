@@ -55,7 +55,6 @@ public class BattleResultsState implements  BattleState{
     }
     @Override
     public void draw(Graphics2D g2) {
-        System.out.println("is running");
         // Shows how much gold and items the party got
         // Show how many xp points each party members got
         BattleUI.drawMainWindow(gamePanel, g2);

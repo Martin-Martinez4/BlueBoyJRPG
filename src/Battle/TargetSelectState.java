@@ -70,7 +70,6 @@ public class TargetSelectState implements BattleState{
 
         }
 
-        System.out.println(Arrays.toString(this.actions));
         // Draw Skills
         if(this.actions == null){
 
