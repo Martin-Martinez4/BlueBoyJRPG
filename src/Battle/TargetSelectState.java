@@ -15,19 +15,23 @@ public class TargetSelectState implements BattleState{
 
     Skill[] skills;
     String[] actions;
-    int currentSkill;
+    int currentSkillIndex;
 
     int currentTarget = 0;
 
-    public TargetSelectState(Skill[] skills, int currentSkill, BattleManager battleManager, GamePanel gamePanel){
+    Skill currentAttack;
+
+    public TargetSelectState(Skill[] skills, int currentSkillIndex, Skill currentAttack, BattleManager battleManager, GamePanel gamePanel){
         this.skills = skills;
-        this.currentSkill = currentSkill;
+        this.currentSkillIndex = currentSkillIndex;
+        this.currentAttack = currentAttack;
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
     }
-    public TargetSelectState(String[] actions, int currentSkill, BattleManager battleManager, GamePanel gamePanel){
+    public TargetSelectState(String[] actions, int currentSkillIndex,  Skill currentAttack, BattleManager battleManager, GamePanel gamePanel){
         this.actions = actions;
-        this.currentSkill = currentSkill;
+        this.currentSkillIndex = currentSkillIndex;
+        this.currentAttack = currentAttack;
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
     }
@@ -73,9 +77,9 @@ public class TargetSelectState implements BattleState{
         // Draw Skills
         if(this.actions == null){
 
-            BattleUI.drawSelectionSkills(skills, currentSkill, gamePanel, g2);
+            BattleUI.drawSelectionSkills(skills, currentSkillIndex, gamePanel, g2);
         } else if (this.skills == null) {
-            BattleUI.drawSelectionSkills(actions, currentSkill, gamePanel, g2);
+            BattleUI.drawSelectionSkills(actions, currentSkillIndex, gamePanel, g2);
 
 
         }
@@ -129,12 +133,12 @@ public class TargetSelectState implements BattleState{
                 // Damage time?
                 Combatant currentPlayer = turnOrderManager.playerTeam.get(turnOrderManager.currentIndex);
                 Combatant targetedEnemy =  turnOrderManager.enemyTeam.get(currentTarget);
-                int damage = currentPlayer.attackTarget(currentPlayer.skills[currentSkill], turnOrderManager.enemyTeam.get(currentTarget));
+                int damage = currentPlayer.attackTarget(currentAttack, turnOrderManager.enemyTeam.get(currentTarget));
                 turnOrderManager.enemyTeam.get(currentTarget).health -= damage;
 
-                if(turnOrderManager.getAdvantageTurn(currentPlayer.skills[currentSkill], turnOrderManager.enemyTeam.get(currentTarget))){
+                if(turnOrderManager.getAdvantageTurn(currentAttack, turnOrderManager.enemyTeam.get(currentTarget))){
                     turnOrderManager.handleAddAdvantageTurn();
-                }else if(turnOrderManager.giveTurnPenalty(currentPlayer.skills[currentSkill], turnOrderManager.enemyTeam.get(currentTarget))){
+                }else if(turnOrderManager.giveTurnPenalty(currentAttack, turnOrderManager.enemyTeam.get(currentTarget))){
                     turnOrderManager.handleTurnPenalty(1);
                 }
 

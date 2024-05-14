@@ -100,6 +100,11 @@ public class EnemyTurnState implements BattleState {
             battleManager.pushState(new GameOver(battleManager, gamePanel));
             return;
         }
+        if(turnOrderManager.getAdvantageTurn(currentEnemy.skills[0], targetedPlayer)){
+            turnOrderManager.handleAddAdvantageTurn();
+        }else if(turnOrderManager.giveTurnPenalty(currentEnemy.skills[0], targetedPlayer)){
+            turnOrderManager.handleTurnPenalty(1);
+        }
 
         TurnOrderManager.team curTeam = turnOrderManager.currentTeam;
         turnOrderManager.handleEndTurn();

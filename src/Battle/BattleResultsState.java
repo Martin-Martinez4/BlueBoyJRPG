@@ -149,6 +149,13 @@ public class BattleResultsState implements  BattleState{
             battleManager.popAllExceptFirst();
             battleManager.g2.dispose();
             gamePanel.gameState = GamePanel.gameStates.playState;
+
+            // for all enemies restore
+                for(int i = 0; i < enemyTeam.size(); i++){
+                    Combatant currentEnemy = enemyTeam.get(i);
+                    currentEnemy.magicPower = currentEnemy.maxMagicPower;
+                    currentEnemy.health = currentEnemy.maxHealth;
+                }
         }
 
     }

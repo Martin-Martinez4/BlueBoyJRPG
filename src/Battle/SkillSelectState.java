@@ -79,7 +79,7 @@ public class SkillSelectState implements BattleState{
             case KeyEvent.VK_ENTER, KeyEvent.VK_RIGHT:
                 if(battleManager.turnOrderManager.playerTeam.get(battleManager.turnOrderManager.currentIndex).magicPower >= skills[currentSkill].getMpCost()){
 
-                    battleManager.pushState(new TargetSelectState(skills, currentSkill, battleManager, gamePanel));
+                    battleManager.pushState(new TargetSelectState(skills, currentSkill, skills[currentSkill], battleManager, gamePanel));
                 }else{
                     battleManager.pushState(new BattleDialogueState("Not enough MP!", battleManager, gamePanel, this, () -> { battleManager.popState();})) ;
                 }

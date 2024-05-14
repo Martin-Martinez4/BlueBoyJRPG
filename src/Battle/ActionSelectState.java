@@ -1,5 +1,6 @@
 package Battle;
 
+import entity.skills.physical.Attack;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -144,7 +145,7 @@ public class ActionSelectState implements BattleState{
             case KeyEvent.VK_RIGHT:
                 switch (currentOption){
                     case Attack:
-                        battleManager.pushState(new TargetSelectState(new String[] { "Attack", "Skills", "Items", "Pass", "Escape"}, currentOption.ordinal(), battleManager, gamePanel));
+                        battleManager.pushState(new TargetSelectState(new String[] { "Attack", "Skills", "Items", "Pass", "Escape"}, currentOption.ordinal(), new Attack(), battleManager, gamePanel));
                         break;
                     case Skills:
                         battleManager.pushState(new SkillSelectState(battleManager, gamePanel, turnOrderManager.playerTeam.get(turnOrderManager.currentIndex).skills));
