@@ -51,7 +51,7 @@ public class UtilityTool {
         Color pastColor = g2.getColor();
 
         g2.setColor(windowColor);
-        g2.fillRoundRect(x, y, width, height, 35, 35);
+        g2.fillRoundRect(x, y, width, height, 15, 15);
 
         g2.setColor(borderColor);
         g2.setStroke(new BasicStroke(3));

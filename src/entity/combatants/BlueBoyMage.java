@@ -12,7 +12,7 @@ public class BlueBoyMage extends Combatant{
                 0,
                 new Affinities(1.2f, 1f, 1f, 1f, 1f, 1f, .8f),
                 new Resistances(1.2f, 1f, 1f, 1f, 1f, 1f, .8f),
-                new GrowthRates(),
+                new GrowthRates(10, 10, 30, 30, 20 ),
                 new BaseStats(),
                 new Skill[]{new Ember()},
                 250,

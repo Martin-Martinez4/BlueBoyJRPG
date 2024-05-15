@@ -21,6 +21,8 @@ public class LevelUpState implements  BattleState{
     int statPointsToAllocate;
     int statPointsLeft;
 
+    int statMax = 100;
+
     LevelUpState(GamePanel gamePanel, Combatant levelUpper, int statPointsToAllocate){
 
         this.gamePanel = gamePanel;
@@ -34,6 +36,7 @@ public class LevelUpState implements  BattleState{
         this.levelUpper = levelUpper;
         this.statPointsToAllocate = statPointsToAllocate;
         this.statPointsLeft = statPointsToAllocate;
+
     }
 
     @Override
@@ -66,7 +69,11 @@ public class LevelUpState implements  BattleState{
         g2.drawString("Stat points left to allocate: "+ statPointsLeft, windowX, windowHeight + windowY - gamePanel.tileSize/4);
 
         windowHeight = (int)(gamePanel.screenHeight * 0.05);
+
+        // draw container
         UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, windowWidth, windowHeight, g2);
+        // Attempt at a bar
+        UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, (int)(windowWidth* ((double) levelUpper.strength/statMax)), windowHeight, new Color(255, 0,0), new Color(255, 0,0, 0), g2);
 
         String text = "STR: ";
         int textHeight = (int)g2.getFontMetrics().getStringBounds(text, g2).getHeight();
@@ -76,24 +83,29 @@ public class LevelUpState implements  BattleState{
         windowY += windowHeight;
 
         UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, windowWidth, windowHeight, g2);
+        UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, (int)(windowWidth* ((double) levelUpper.defense/statMax)), windowHeight, new Color(255, 0,0), new Color(255, 0,0, 50), g2);
+
         g2.drawString("DEF: ", windowX, (windowHeight/2 + textHeight/2 + windowHeight + windowY + gapY));
 
         gapY += gamePanel.tileSize;
         windowY += windowHeight;
 
         UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, windowWidth, windowHeight, g2);
+        UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, (int)(windowWidth* ((double) levelUpper.defense/statMax)), windowHeight, new Color(255, 0,0), new Color(255, 0,0, 50), g2);
         g2.drawString("MAG: ", windowX, (windowHeight/2 + textHeight/2 + windowHeight + windowY + gapY));
 
         gapY += gamePanel.tileSize;
         windowY += windowHeight;
 
         UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, windowWidth, windowHeight, g2);
+        UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, (int)(windowWidth* ((double) levelUpper.defense/statMax)), windowHeight, new Color(255, 0,0), new Color(255, 0,0, 50), g2);
         g2.drawString("MDEF: ", windowX, (windowHeight/2 + textHeight/2 + windowHeight + windowY + gapY));
 
         gapY += gamePanel.tileSize;
         windowY += windowHeight;
 
         UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, windowWidth, windowHeight, g2);
+        UtilityTool.drawSubWindow(windowX + gapBetweenStatAndBar, windowHeight + windowY + gapY, (int)(windowWidth* ((double) levelUpper.defense/statMax)), windowHeight, new Color(255, 0,0), new Color(255, 0,0, 50), g2);
         g2.drawString("LUCK: ", windowX, (windowHeight/2 + textHeight/2 + windowHeight + windowY + gapY));
 
 
