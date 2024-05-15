@@ -44,7 +44,8 @@ public class BattleManager {
         // this.keyImage = new Key(this.gamePanel).image;
         this.battleStates.add(new ActionSelectState(this, gamePanel));
 
-//        this.battleStates.add(new BattleResultsState(this, gamePanel, 60, 100, new String[]{"test"}));
+        this.battleStates.add(new BattleResultsState(this, gamePanel, turnOrderManager.enemyTeam));
+//        this.battleStates.add(new LevelUpState(gamePanel, playerTeam.get(0), 3));
 
         try{
             InputStream inputStream = getClass().getResourceAsStream("/fonts/Jersey15-Regular.ttf");

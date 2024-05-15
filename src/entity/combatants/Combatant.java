@@ -260,6 +260,10 @@ public class Combatant {
         this.exp += expAmount;
     }
 
+    public void addStatPoints(int strength, int defense, int magic, int magicDefense , int luck){
+
+    }
+
     public int giveXP(double itemMultiplier){
         return (int)(((baseEXP * this.level)/7) * itemMultiplier * this.expMultiplier);
     }

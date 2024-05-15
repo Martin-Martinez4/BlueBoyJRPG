@@ -42,6 +42,8 @@ public class BattleResultsState implements  BattleState{
             totalMoney += enemyTeam.get(i).giveMoney();
         }
 
+        gamePanel.money += totalMoney;
+
         for (int i = 0; i < playerTeam.size(); i++){
             playerTeam.get(i).addExp(totalEXP/enemyTeam.size());
         }
@@ -145,10 +147,13 @@ public class BattleResultsState implements  BattleState{
         switch(code){
             case KeyEvent.VK_ENTER:
 
-            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
-            battleManager.popAllExceptFirst();
-            battleManager.g2.dispose();
-            gamePanel.gameState = GamePanel.gameStates.playState;
+//            battleManager.turnOrderManager = new TurnOrderManager(gamePanel, battleManager);
+//            battleManager.popAllExceptFirst();
+//            battleManager.g2.dispose();
+//            gamePanel.gameState = GamePanel.gameStates.playState;
+
+                battleManager.popState();
+                battleManager.pushState(new LevelUpState(gamePanel, battleManager.turnOrderManager.playerTeam.get(0), 3));
 
             // for all enemies restore
                 for(int i = 0; i < enemyTeam.size(); i++){
