@@ -261,7 +261,11 @@ public class Combatant {
     }
 
     public void addStatPoints(int strength, int defense, int magic, int magicDefense , int luck){
-
+            this.strength += strength;
+            this.defense += defense;
+            this.magic += magic;
+            this.magicDefense += magicDefense;
+            this.luck += luck;
     }
 
     public int giveXP(double itemMultiplier){
