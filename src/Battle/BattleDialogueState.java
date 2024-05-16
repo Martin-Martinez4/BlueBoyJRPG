@@ -1,6 +1,7 @@
 package Battle;
 
 import StateManager.State;
+import StateManager.StateManager;
 import entity.combatants.Combatant;
 import entity.skills.Skill;
 import main.GamePanel;
@@ -16,7 +17,7 @@ import static main.UtilityTool.getXforCenteredText;
 public class BattleDialogueState implements State {
 
     State previousBattleState;
-    BattleManager battleManager;
+    StateManager stateManger;
     GamePanel gamePanel;
     String text;
     State getPreviousBattleState;
@@ -24,17 +25,15 @@ public class BattleDialogueState implements State {
     Runnable nextStep;
 
     // The runnable is here because the same behavior may not be needed for all battle dialogue
-    BattleDialogueState(String text, BattleManager battleManager, GamePanel gamePanel, State previousBattleState, Runnable nextStep){
+    public BattleDialogueState(String text, GamePanel gamePanel, State previousBattleState, Runnable nextStep){
         this.text = text;
-        this.battleManager = battleManager;
         this.gamePanel = gamePanel;
         this.previousBattleState = previousBattleState;
         this.drawSubWindow = false;
         this.nextStep = nextStep;
     }
-    BattleDialogueState(String text, BattleManager battleManager, GamePanel gamePanel, State previousBattleState, boolean drawSubWindow, Runnable nextStep){
+    public BattleDialogueState(String text, GamePanel gamePanel, State previousBattleState, boolean drawSubWindow, Runnable nextStep){
         this.text = text;
-        this.battleManager = battleManager;
         this.gamePanel = gamePanel;
         this.previousBattleState = previousBattleState;
         this.drawSubWindow = drawSubWindow;

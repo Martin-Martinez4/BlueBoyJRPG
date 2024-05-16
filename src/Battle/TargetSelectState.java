@@ -152,7 +152,6 @@ public class TargetSelectState implements State {
 
                 battleManager.pushState(new BattleDialogueState(
                         String.format( curTeam + " %s attacks %s for %o damage", currentPlayer.name, targetedEnemy.name, damage),
-                        battleManager,
                         gamePanel,
                         this,
                         () -> {   // anon lambda expression

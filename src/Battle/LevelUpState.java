@@ -259,7 +259,7 @@ public class LevelUpState implements State {
 
             case KeyEvent.VK_ENTER:
                 if(statPointsLeftToAllocate > 0){
-                    battleManager.pushState(new BattleDialogueState("Use all points before continuing.", battleManager, gamePanel, this, true, ()->{
+                    battleManager.pushState(new BattleDialogueState("Use all points before continuing.", gamePanel, this, true, ()->{
                         battleManager.popState();
                     }));
 

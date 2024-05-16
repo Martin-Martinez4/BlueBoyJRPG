@@ -157,7 +157,6 @@ public class ActionSelectState implements State {
                         turnOrderManager.handleEndTurn();
                         battleManager.pushState(new BattleDialogueState(
                                 "Pass",
-                                battleManager,
                                 gamePanel,
                                 this,
                                 () -> {   // anon lambda expression

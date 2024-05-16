@@ -13,12 +13,20 @@ public class Ether extends Item{
 
     @Override
     public boolean use(Combatant target) {
+        if(target.magicPower < target.maxMagicPower  && target.health > 0){
 
-        if(target.magicPower < target.maxMagicPower){
+            if(target.maxMagicPower - target.magicPower <= restoreAmount){
+                target.magicPower = target.maxMagicPower;
 
-            target.magicPower += restoreAmount;
-            return true;
+                return true;
+            }else{
+
+                target.magicPower += restoreAmount;
+                return true;
+            }
+
         }
+
         return false;
     }
 }

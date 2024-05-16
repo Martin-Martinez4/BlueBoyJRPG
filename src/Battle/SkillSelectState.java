@@ -82,7 +82,7 @@ public class SkillSelectState implements State {
 
                     battleManager.pushState(new TargetSelectState(skills, currentSkill, skills[currentSkill], battleManager, gamePanel));
                 }else{
-                    battleManager.pushState(new BattleDialogueState("Not enough MP!", battleManager, gamePanel, this, () -> { battleManager.popState();})) ;
+                    battleManager.pushState(new BattleDialogueState("Not enough MP!", gamePanel, this, () -> { battleManager.popState();})) ;
                 }
                 break;
             case KeyEvent.VK_BACK_SPACE:

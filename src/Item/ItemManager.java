@@ -16,19 +16,15 @@ public class ItemManager {
         this.gamePanel = gamePanel;
 
         this.addItem(SmallPotion.name);
-        this.addItem(SmallPotion.name);
-        this.addItem(SmallPotion.name);
-        this.addItem(SmallPotion.name);
-        this.addItem(SmallPotion.name);
-        this.addItem(SmallPotion.name);
 
-        this.addItem(Ether.name);
-        this.addItem(Ether.name);
-        this.addItem(Ether.name);
-
-        this.addItem(Revive.name);
-        this.addItem(Revive.name);
-        this.addItem(Revive.name);
+//
+//        this.addItem(Ether.name);
+//        this.addItem(Ether.name);
+//        this.addItem(Ether.name);
+//
+//        this.addItem(Revive.name);
+//        this.addItem(Revive.name);
+//        this.addItem(Revive.name);
     }
 
     public void addItem(String itemName){
@@ -66,23 +62,39 @@ public class ItemManager {
 
     }
     public boolean useItem(String itemName, Combatant target){
-        Item itemToUse = getItem(itemName);
 
-        // Will return true if the item was used
-        boolean wasItemUsed = itemToUse.use(target);
+        if(itemAmount.containsKey(itemName)){
 
-        if(wasItemUsed){
-            // taking away the item
-            this.removeItem(itemName);
+            Item itemToUse = getItem(itemName);
+
+            // Will return true if the item was used
+            boolean wasItemUsed = itemToUse.use(target);
+
+            if(wasItemUsed){
+                // taking away the item
+                this.removeItem(itemName);
+            }
+
+            return wasItemUsed;
         }
 
-        return wasItemUsed;
+        return false;
 
     }
 
     // Will implement later
     public void useItem(String itemName, ArrayList<Combatant> targetTeam){
         // items that affect more than one target
+    }
+
+    public int getItemAmount(String itemName){
+        if(itemAmount.containsKey(itemName)){
+
+            return this.itemAmount.get(itemName);
+
+        }else{
+            return  0;
+        }
     }
 
     public HashMap<String, Integer> getItems(){

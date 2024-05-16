@@ -81,7 +81,7 @@ public class PauseMenuState implements State {
 
             pauseMenuManager.pushState(new ItemSelectState(pauseMenuManager, gamePanel));
             
-        } else if (code == KeyEvent.VK_BACK_SPACE) {
+        } else if (code == KeyEvent.VK_BACK_SPACE || code == KeyEvent.VK_P) {
             // Close pause menu
             pauseMenuManager.popAllExceptFirst();
             gamePanel.gameState = GamePanel.gameStates.playState;

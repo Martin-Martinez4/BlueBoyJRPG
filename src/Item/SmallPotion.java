@@ -15,10 +15,18 @@ public class SmallPotion extends Item{
     @Override
     public boolean use(Combatant target) {
 
-        if(target.health < target.maxHealth){
+        if(target.health < target.maxHealth && target.health > 0){
 
-            target.health += healAmount;
-            return true;
+            if(target.maxHealth - target.health <= healAmount){
+                target.health = target.maxHealth;
+
+                return true;
+            }else{
+
+                target.health += healAmount;
+                return true;
+            }
+
         }
 
         return false;

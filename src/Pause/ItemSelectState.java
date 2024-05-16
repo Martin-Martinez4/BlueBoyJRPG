@@ -1,5 +1,6 @@
 package Pause;
 
+import Battle.BattleDialogueState;
 import StateManager.State;
 import entity.combatants.Combatant;
 import main.GamePanel;
@@ -7,6 +8,8 @@ import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ItemSelectState implements State {
@@ -14,8 +17,13 @@ public class ItemSelectState implements State {
     PauseMenuManager pauseMenuManager;
     GamePanel gamePanel;
 
-    int cursorPosition = 0;
-    int maxCursorPosition = 0;
+    int itemCursorPosition = 0;
+    int maxItemCursorPosition = 0;
+    String currentItemName;
+
+    int playerCursorPosition = 0;
+
+    boolean inTargetSelect = false;
 
     public ItemSelectState(PauseMenuManager pauseMenuManager, GamePanel gamePanel){
         this.pauseMenuManager = pauseMenuManager;
@@ -44,26 +52,55 @@ public class ItemSelectState implements State {
         int statsWidth = (gamePanel.screenWidth/3);
         int statsHeight = (gamePanel.screenHeight/5);
 
-        for(int i = 0; i < gamePanel.playerTeam.size(); i++){
-            Combatant currentPlayer = gamePanel.playerTeam.get(i);
 
-            UtilityTool.drawSubWindow(statsX,statsY , statsWidth, statsHeight, g2);
+        if(inTargetSelect){
+            for (int i = 0; i < gamePanel.playerTeam.size(); i++) {
+                Combatant currentPlayer = gamePanel.playerTeam.get(i);
 
-            int nameX = statsX + gamePanel.tileSize/2;
-            int nameY = statsY + gamePanel.tileSize;
+                if(playerCursorPosition == i){
 
-            int hpX = nameX;
-            int hpY = nameY + gamePanel.tileSize/2;
+                    UtilityTool.drawSubWindow(statsX, statsY, statsWidth,  statsHeight, new Color(0, 0, 0), new Color(50, 50, 150), g2);
+                }
+                else{
+                    UtilityTool.drawSubWindow(statsX, statsY, statsWidth, statsHeight, g2);
 
-            int mpX = hpX;
-            int mpY = hpY + gamePanel.tileSize/2;
-            g2.drawString(currentPlayer.name, nameX, nameY);
-            g2.drawString("HP: "+currentPlayer.health  +"/"+ currentPlayer.maxHealth, hpX, hpY);
-            g2.drawString("MP: "+currentPlayer.magicPower  +"/"+ currentPlayer.maxMagicPower, mpX, mpY);
+                }
 
-            statsY += statsHeight + gamePanel.tileSize/2;
+                int nameX = statsX + gamePanel.tileSize / 2;
+                int nameY = statsY + gamePanel.tileSize;
+
+                int hpX = nameX;
+                int hpY = nameY + gamePanel.tileSize / 2;
+
+                int mpX = hpX;
+                int mpY = hpY + gamePanel.tileSize / 2;
+                g2.drawString(currentPlayer.name, nameX, nameY);
+                g2.drawString("HP: " + currentPlayer.health + "/" + currentPlayer.maxHealth, hpX, hpY);
+                g2.drawString("MP: " + currentPlayer.magicPower + "/" + currentPlayer.maxMagicPower, mpX, mpY);
+
+                statsY += statsHeight + gamePanel.tileSize / 2;
+            }
+        }else{
+            for (int i = 0; i < gamePanel.playerTeam.size(); i++) {
+                Combatant currentPlayer = gamePanel.playerTeam.get(i);
+
+                UtilityTool.drawSubWindow(statsX, statsY, statsWidth, statsHeight, g2);
+
+                int nameX = statsX + gamePanel.tileSize / 2;
+                int nameY = statsY + gamePanel.tileSize;
+
+                int hpX = nameX;
+                int hpY = nameY + gamePanel.tileSize / 2;
+
+                int mpX = hpX;
+                int mpY = hpY + gamePanel.tileSize / 2;
+                g2.drawString(currentPlayer.name, nameX, nameY);
+                g2.drawString("HP: " + currentPlayer.health + "/" + currentPlayer.maxHealth, hpX, hpY);
+                g2.drawString("MP: " + currentPlayer.magicPower + "/" + currentPlayer.maxMagicPower, mpX, mpY);
+
+                statsY += statsHeight + gamePanel.tileSize / 2;
+            }
         }
-
         statsY = gamePanel.tileSize*2;
 
         int actionsX = width - statsWidth;
@@ -80,16 +117,29 @@ public class ItemSelectState implements State {
 
         }else{
 
-            g2.drawString("> ", actionsX + (gamePanel.tileSize/2), statsY + gamePanel.tileSize + gamePanel.tileSize);
-
-            for (Map.Entry<String, Integer> entry : gamePanel.itemManager.getItems().entrySet()) {
-                String key = entry.getKey();
-                Integer value = entry.getValue();
-
-                g2.drawString(key + " " + "x" + value, actionsX + (int)(gamePanel.tileSize), statsY + gamePanel.tileSize + gamePanel.tileSize);
-                maxCursorPosition++;
-                statsY += gamePanel.tileSize;
+            HashMap<String, Integer> itemsInInventory = gamePanel.itemManager.getItems();
+            maxItemCursorPosition = itemsInInventory.size() -1;
+            if(itemCursorPosition > maxItemCursorPosition ){
+                itemCursorPosition = maxItemCursorPosition;
+            } else if (itemCursorPosition < 0) {
+                itemCursorPosition = 0;
             }
+
+            int currentItem = 0;
+            for (String entry : itemsInInventory.keySet()) {
+
+                g2.drawString(entry + " " + "x" + itemsInInventory.get(entry), actionsX + (int)(gamePanel.tileSize), statsY + gamePanel.tileSize + gamePanel.tileSize);
+
+                if(currentItem == this.itemCursorPosition){
+
+                    g2.drawString("> ", actionsX + (gamePanel.tileSize/2), statsY + gamePanel.tileSize + gamePanel.tileSize);
+                    currentItemName = entry;
+                }
+                statsY += gamePanel.tileSize;
+
+                currentItem++;
+            }
+
 
 
         }
@@ -98,8 +148,84 @@ public class ItemSelectState implements State {
 
     @Override
     public void handleInputs(KeyEvent e) {
+        int code = e.getKeyCode();
 
+        if(inTargetSelect){
+
+            switch (code){
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
+                    playerCursorPosition--;
+                    if(playerCursorPosition < 0){
+                        playerCursorPosition = gamePanel.playerTeam.size()-1;
+                    }
+                    break;
+                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
+                    playerCursorPosition++;
+                    if(playerCursorPosition >  gamePanel.playerTeam.size()-1){
+                        playerCursorPosition = 0;
+                    }
+                    break;
+                case KeyEvent.VK_ENTER:
+                    if(gamePanel.itemManager.useItem(currentItemName, gamePanel.playerTeam.get(playerCursorPosition))){
+                        // check if there is still items
+                        if(gamePanel.itemManager.getItemAmount(currentItemName) <= 0){
+                            inTargetSelect = false;
+                        }
+
+
+                    }
+                    else{
+                        pauseMenuManager.pushState(new BattleDialogueState("Nothing Happened!", gamePanel, this, true, () -> {
+                            pauseMenuManager.popState();
+                            if(gamePanel.itemManager.getItemAmount(currentItemName) == 0){
+                                inTargetSelect = false;
+                            }
+                        }));
+                    }
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    inTargetSelect = false;
+                    break;
+            }
+
+        }else{
+
+            switch (code){
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
+                    itemCursorPosition--;
+                    if(itemCursorPosition < 0){
+                        itemCursorPosition = maxItemCursorPosition;
+                    }
+                    break;
+                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
+                    itemCursorPosition++;
+                    if(itemCursorPosition > maxItemCursorPosition){
+                        itemCursorPosition = 0;
+                    }
+                    break;
+                case KeyEvent.VK_ENTER:
+                    if(gamePanel.itemManager.getItemAmount(currentItemName) > 0){
+                        inTargetSelect = true;
+                    }else{
+                        if(gamePanel.itemManager.getItems().isEmpty()){
+                            pauseMenuManager.pushState(new BattleDialogueState("You have no items", gamePanel, this, true,()->{
+                                pauseMenuManager.popState();
+                            }));
+                        }
+                    }
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    pauseMenuManager.popState();
+                    break;
+
+            }
+        }
         // if maxCursorPosition > 1 let the cursor move else do not
+
 
     }
 }

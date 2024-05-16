@@ -112,7 +112,6 @@ public class EnemyTurnState implements State {
 
         this.battleManager.pushState(new BattleDialogueState(
                 String.format(curTeam + " %s attacks %s for %o damage", currentEnemy.name, targetedPlayer.name, damage),
-                battleManager,
                 gamePanel,
                 this,
                 () -> {
