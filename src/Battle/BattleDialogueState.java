@@ -61,16 +61,10 @@ public class BattleDialogueState implements State {
 
     @Override
     public void handleInputs(KeyEvent e) {
-        TurnOrderManager turnOrderManager = battleManager.turnOrderManager;
         int code = e.getKeyCode();
 
-        switch (code){
-
-
-            case KeyEvent.VK_ENTER:
-                nextStep.run();
-                break;
-
+        if (code == KeyEvent.VK_ENTER) {
+            nextStep.run();
         }
     }
 }

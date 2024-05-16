@@ -1,5 +1,6 @@
 package main;
 
+import Pause.PauseMenuManager;
 import object.Key;
 
 import java.awt.*;
@@ -26,6 +27,8 @@ public class UI {
     int messageDuration = 80;
     public boolean gameFinished = false;
 
+    PauseMenuManager pauseMenuManager;
+
 
 
     public enum TitleCommands{
@@ -41,6 +44,7 @@ public class UI {
 
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        this.pauseMenuManager = new PauseMenuManager(gamePanel, g2);
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
         this.arial_80B = new Font("Arial", Font.BOLD, 80);
 //        this.keyImage = new Key(this.gamePanel).image;
@@ -55,6 +59,7 @@ public class UI {
 
             inputStream = getClass().getResourceAsStream("/fonts/IBMPlexMono-Regular.ttf");
             iBMPlexMono = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+
 
         }catch (FontFormatException e){
             e.printStackTrace();
@@ -88,7 +93,8 @@ public class UI {
                 // Do player stuff later
                 break;
             case pauseState:
-                drawPauseScreen();
+//                drawPauseScreen();
+                pauseMenuManager.draw(g2);
                 break;
             case dialogueState:
                 drawDialogueScreen();

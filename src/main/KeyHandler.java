@@ -54,10 +54,7 @@ public class KeyHandler implements KeyListener {
 
         // Pause State
         else if(gamePanel.gameState == GamePanel.gameStates.pauseState){
-            if(code == KeyEvent.VK_P){
-                gamePanel.gameState = GamePanel.gameStates.playState;
-
-            }
+            this.gamePanel.ui.pauseMenuManager.handleInputs(e);
         }
         // Battle State
         else if(gamePanel.gameState == GamePanel.gameStates.battleState){

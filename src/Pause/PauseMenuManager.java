@@ -18,6 +18,8 @@ public class PauseMenuManager implements StateManager {
     public PauseMenuManager(GamePanel gamePanel, Graphics2D g2){
         this.gamePanel = gamePanel;
         this.g2 = g2;
+
+        this.pushState(new PauseMenuState(this, gamePanel));
     }
 
 

@@ -14,6 +14,21 @@ public class ItemManager {
     public ItemManager(GamePanel gamePanel){
 
         this.gamePanel = gamePanel;
+
+        this.addItem(SmallPotion.name);
+        this.addItem(SmallPotion.name);
+        this.addItem(SmallPotion.name);
+        this.addItem(SmallPotion.name);
+        this.addItem(SmallPotion.name);
+        this.addItem(SmallPotion.name);
+
+        this.addItem(Ether.name);
+        this.addItem(Ether.name);
+        this.addItem(Ether.name);
+
+        this.addItem(Revive.name);
+        this.addItem(Revive.name);
+        this.addItem(Revive.name);
     }
 
     public void addItem(String itemName){
@@ -69,4 +84,10 @@ public class ItemManager {
     public void useItem(String itemName, ArrayList<Combatant> targetTeam){
         // items that affect more than one target
     }
+
+    public HashMap<String, Integer> getItems(){
+        return itemAmount;
+    }
+
+
 }
