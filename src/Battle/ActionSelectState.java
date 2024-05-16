@@ -1,5 +1,6 @@
 package Battle;
 
+import StateManager.State;
 import entity.skills.physical.Attack;
 import main.GamePanel;
 import main.UtilityTool;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class ActionSelectState implements BattleState{
+public class ActionSelectState implements State {
     // Do not create new instances inside the game loop or else a new instance will be created 60 times per second
     GamePanel gamePanel;
     BattleManager battleManager;

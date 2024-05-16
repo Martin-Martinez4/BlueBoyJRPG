@@ -1,5 +1,6 @@
 package Battle;
 
+import StateManager.State;
 import main.GamePanel;
 
 import java.awt.*;
@@ -7,7 +8,7 @@ import java.awt.event.KeyEvent;
 
 import static main.UtilityTool.getXforCenteredText;
 
-public class GameOver implements BattleState{
+public class GameOver implements State {
 
     GamePanel gamePanel;
     BattleManager battleManager;

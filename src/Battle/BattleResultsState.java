@@ -1,5 +1,6 @@
 package Battle;
 
+import StateManager.State;
 import entity.combatants.Combatant;
 import main.GamePanel;
 import main.UtilityTool;
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class BattleResultsState implements  BattleState{
+public class BattleResultsState implements State {
 
     GamePanel gamePanel;
     BattleManager battleManager;
@@ -17,7 +18,7 @@ public class BattleResultsState implements  BattleState{
 
     boolean allocated = false;
 
-    ArrayList<BattleState> nextStates = new ArrayList<BattleState>();
+    ArrayList<State> nextStates = new ArrayList<State>();
 
     // Get items function later
      String[] items = new String[]{"test"};

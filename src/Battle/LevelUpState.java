@@ -1,5 +1,6 @@
 package Battle;
 
+import StateManager.State;
 import entity.combatants.Combatant;
 import main.GamePanel;
 import main.UtilityTool;
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 // Should probably be renamed
-public class LevelUpState implements  BattleState{
+public class LevelUpState implements State {
 
     int strength;
     int defense;

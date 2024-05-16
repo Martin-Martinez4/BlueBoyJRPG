@@ -1,5 +1,6 @@
 package Battle;
 
+import StateManager.State;
 import entity.skills.Skill;
 import main.GamePanel;
 import main.UtilityTool;
@@ -7,7 +8,7 @@ import main.UtilityTool;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class SkillSelectState implements BattleState{
+public class SkillSelectState implements State {
     GamePanel gamePanel;
     BattleManager battleManager;
 

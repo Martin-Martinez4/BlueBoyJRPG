@@ -26,6 +26,8 @@ public class UI {
     int messageDuration = 80;
     public boolean gameFinished = false;
 
+
+
     public enum TitleCommands{
         LoadGame,
         NewGame,

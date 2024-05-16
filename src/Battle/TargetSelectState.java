@@ -1,5 +1,6 @@
 package Battle;
 
+import StateManager.State;
 import entity.combatants.Combatant;
 import entity.skills.Skill;
 import main.GamePanel;
@@ -9,7 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
-public class TargetSelectState implements BattleState{
+public class TargetSelectState implements State {
     GamePanel gamePanel;
     BattleManager battleManager;
 

@@ -1,5 +1,7 @@
 package Battle;
 
+import StateManager.StateManager;
+import StateManager.State;
 import entity.combatants.Combatant;
 import main.GamePanel;
 
@@ -12,13 +14,13 @@ import java.util.ArrayList;
 // May have to add an enemy turn state and create some crude enemy AI
 // If turnOrder enemy turn push enemy state; if player Turn push Action SelectState
 
-public class BattleManager {
+public class BattleManager implements StateManager {
 
     // Do not create new instances inside the game loop or else a new instance will be created 60 times per second
     GamePanel gamePanel;
     Graphics2D g2;
 
-    private ArrayList<BattleState> battleStates = new ArrayList<BattleState>();
+    private ArrayList<State> battleStates = new ArrayList<State>();
 
     Font arial_40, arial_80B;
     // From Font Folder
@@ -34,7 +36,7 @@ public class BattleManager {
     public TurnOrderManager turnOrderManager;
 
 
-    public BattleManager(GamePanel gamePanel, ArrayList<Combatant> playerTeam) {
+    public BattleManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.arial_40 = new Font("Arial", Font.PLAIN, 40);
         this.arial_80B = new Font("Arial", Font.BOLD, 80);
@@ -67,8 +69,6 @@ public class BattleManager {
 
     }
 
-
-
     public void draw(Graphics2D g2) {
         g2.setFont(arial_40);
         g2.setColor(Color.white);
@@ -82,15 +82,14 @@ public class BattleManager {
         switch(gamePanel.gameState){
 
             case battleState:
-                drawBattleScene();
+                drawScene();
                 break;
 
         }
 
     }
 
-
-    public void drawBattleScene(){
+    public void drawScene(){
 
         this.battleStates.get(battleStates.size()-1).draw(g2);
 
@@ -109,7 +108,7 @@ public class BattleManager {
         }
     }
 
-    public BattleState peek(){
+    public State peek(){
         return battleStates.get(battleStates.size()-1);
     }
 
@@ -120,22 +119,8 @@ public class BattleManager {
 
     }
 
-    public void pushState(BattleState battleState){
+    public void pushState(State battleState){
         battleStates.add(battleState);
-    }
-
-    public void endBattle(){
-        gamePanel.gameState = GamePanel.gameStates.playState;
-        this.turnOrderManager = new TurnOrderManager(gamePanel, this);
-    }
-
-    public void popUntil(int targetHash){
-        while(this.peek().hashCode() != targetHash){
-            this.popState();
-            if(battleStates.size() <= 1){
-                break;
-            }
-        }
     }
 
     public void printStack(){

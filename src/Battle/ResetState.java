@@ -1,11 +1,12 @@
 package Battle;
 
+import StateManager.State;
 import main.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class ResetState implements BattleState{
+public class ResetState implements State {
     // Just runs the constructor and ends battle when enter is pressed.
     // It may be bad form but the project is due tomorrow :)
 

@@ -125,7 +125,7 @@ public class Player extends Entity{
 
             if(encounter > encounterRate){
                 // Change to battle State here.
-                gamePanel.battleManager = new BattleManager(gamePanel, gamePanel.playerTeam);
+                gamePanel.battleManager = new BattleManager(gamePanel);
                 gamePanel.gameState = GamePanel.gameStates.battleState;
                 System.out.println("Battle Would have Happened");
             }
