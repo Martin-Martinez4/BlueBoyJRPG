@@ -17,6 +17,8 @@ public class BattleResultsState implements  BattleState{
 
     boolean allocated = false;
 
+    ArrayList<BattleState> nextStates = new ArrayList<BattleState>();
+
     // Get items function later
      String[] items = new String[]{"test"};
 
@@ -48,10 +50,18 @@ public class BattleResultsState implements  BattleState{
             playerTeam.get(i).addExp(totalEXP/enemyTeam.size());
         }
 
+        nextStates.add(new ResetState(battleManager, gamePanel));
         for (int i = 0; i < playerTeam.size(); i++){
+            int levelsGained = 0;
             while(playerTeam.get(i).totalXPForNextLevel - playerTeam.get(i).exp < 0){
                 playerTeam.get(i).levelUp(1);
+                levelsGained++;
             }
+
+            if(levelsGained > 0){
+                nextStates.add(new LevelUpState(battleManager, gamePanel, playerTeam.get(i), levelsGained * 3));
+            }
+
         }
 
     }
@@ -143,7 +153,6 @@ public class BattleResultsState implements  BattleState{
     public void handleInputs(KeyEvent e) {
         int code = e.getKeyCode();
 
-
         switch(code){
             case KeyEvent.VK_ENTER:
 
@@ -153,7 +162,10 @@ public class BattleResultsState implements  BattleState{
 //            gamePanel.gameState = GamePanel.gameStates.playState;
 
                 battleManager.popState();
-                battleManager.pushState(new LevelUpState(gamePanel, battleManager.turnOrderManager.playerTeam.get(0), 3));
+                for(int i = 0; i < nextStates.size(); i++){
+
+                    battleManager.pushState(nextStates.get(i));
+                }
 
             // for all enemies restore
                 for(int i = 0; i < enemyTeam.size(); i++){

@@ -22,17 +22,33 @@ public class LevelUpState implements  BattleState{
     int magicDefenseAdded = 0;
     int luckAdded = 0;
 
+    BattleManager battleManager;
     GamePanel gamePanel;
     Combatant levelUpper;
     int statPointsToAllocate;
-    int statPointsLeft;
+    int statPointsLeftToAllocate;
 
     int statMax = 100;
 
+    // Make it into an enum later
     int cursorIndex = 0;
+    int maxCursorIndex = 4;
 
-    LevelUpState(GamePanel gamePanel, Combatant levelUpper, int statPointsToAllocate){
+    // implement later
+    private enum Stats {
+        STR,
+        DEF,
+        MAG,
+        MAGD,
+        LUCK
+    }
 
+    Stats[] statsArray = Stats.values();
+
+
+    LevelUpState(BattleManager battleManager, GamePanel gamePanel, Combatant levelUpper, int statPointsToAllocate){
+
+        this.battleManager = battleManager;
         this.gamePanel = gamePanel;
 
         this.strength = levelUpper.strength;
@@ -43,7 +59,7 @@ public class LevelUpState implements  BattleState{
 
         this.levelUpper = levelUpper;
         this.statPointsToAllocate = statPointsToAllocate;
-        this.statPointsLeft = statPointsToAllocate;
+        this.statPointsLeftToAllocate = statPointsToAllocate;
 
 
     }
@@ -75,7 +91,7 @@ public class LevelUpState implements  BattleState{
         // Allocation screen should take up most of the screen
         int gapY = gamePanel.tileSize;
         int gapBetweenStatAndBar = (gamePanel.tileSize * 4)/3;
-        g2.drawString("Stat points left to allocate: "+ statPointsLeft, windowX, windowHeight + windowY - gamePanel.tileSize/4);
+        g2.drawString("Stat points left to allocate: "+ statPointsLeftToAllocate, windowX, windowHeight + windowY - gamePanel.tileSize/4);
 
         windowHeight = (int)(gamePanel.screenHeight * 0.05);
 
@@ -158,6 +174,99 @@ public class LevelUpState implements  BattleState{
 
     @Override
     public void handleInputs(KeyEvent e) {
+        int code = e.getKeyCode();
+
+        System.out.println(cursorIndex);
+
+        switch(code){
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
+                cursorIndex++;
+                if(cursorIndex > maxCursorIndex){
+                    cursorIndex = 0;
+                }
+                break;
+
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
+                cursorIndex--;
+                if(cursorIndex < 0){
+                    cursorIndex = maxCursorIndex;
+                }
+                break;
+
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+                if(statPointsLeftToAllocate > 0){
+
+                    switch(statsArray[cursorIndex]){
+                        case STR -> this.strengthAdded++;
+                        case DEF -> this.defenseAdded++;
+                        case MAG -> this.magicAdded++;
+                        case MAGD -> this.magicDefenseAdded++;
+                        case LUCK -> this.luckAdded++;
+                    }
+                    this.statPointsLeftToAllocate--;
+                }
+                break;
+
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+
+                if(statPointsLeftToAllocate < statPointsToAllocate){
+
+                    switch(statsArray[cursorIndex]){
+                        case STR:
+                            if(this.strengthAdded > 0){
+
+                                this.strengthAdded--;
+                                this.statPointsLeftToAllocate++;
+                            }
+                            break;
+                        case DEF:
+                            if(this.defenseAdded > 0){
+
+                                this.defenseAdded--;
+                                this.statPointsLeftToAllocate++;
+                            }
+                            break;
+                        case MAG:
+                            if(this.magicAdded > 0){
+
+                                this.magicAdded--;
+                                this.statPointsLeftToAllocate++;
+                            }
+                            break;
+                        case MAGD:
+                            if(this.magicDefenseAdded > 0){
+
+                                this.magicDefenseAdded--;
+                                this.statPointsLeftToAllocate++;
+                            }
+                            break;
+                        case LUCK :
+                            if(this.luckAdded > 0){
+
+                                this.luckAdded--;
+                                this.statPointsLeftToAllocate++;
+                            }
+                            break;
+                    }
+                }
+                break;
+
+
+            case KeyEvent.VK_ENTER:
+                if(statPointsLeftToAllocate > 0){
+                    battleManager.pushState(new BattleDialogueState("Use all points before continuing.", battleManager, gamePanel, this, true, ()->{
+                        battleManager.popState();
+                    }));
+
+                }else{
+                    levelUpper.addStatPoints(this.strengthAdded, this.defenseAdded, this.magicAdded, this.magicDefenseAdded, this.luckAdded);
+                    battleManager.popState();
+                }
+        }
 
     }
 }

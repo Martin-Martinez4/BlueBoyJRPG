@@ -3,6 +3,7 @@ package Battle;
 import entity.combatants.Combatant;
 import entity.skills.Skill;
 import main.GamePanel;
+import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ public class BattleDialogueState implements  BattleState{
     GamePanel gamePanel;
     String text;
     BattleState getPreviousBattleState;
+    boolean drawSubWindow;
     Runnable nextStep;
 
     // The runnable is here because the same behavior may not be needed for all battle dialogue
@@ -26,6 +28,15 @@ public class BattleDialogueState implements  BattleState{
         this.battleManager = battleManager;
         this.gamePanel = gamePanel;
         this.previousBattleState = previousBattleState;
+        this.drawSubWindow = false;
+        this.nextStep = nextStep;
+    }
+    BattleDialogueState(String text, BattleManager battleManager, GamePanel gamePanel, BattleState previousBattleState, boolean drawSubWindow, Runnable nextStep){
+        this.text = text;
+        this.battleManager = battleManager;
+        this.gamePanel = gamePanel;
+        this.previousBattleState = previousBattleState;
+        this.drawSubWindow = drawSubWindow;
         this.nextStep = nextStep;
     }
     @Override
@@ -37,6 +48,11 @@ public class BattleDialogueState implements  BattleState{
 
         // Darw test in middle
         int stringX = getXforCenteredText(text, gamePanel, g2);
+
+        if(drawSubWindow){
+
+            UtilityTool.drawSubWindow(stringX-gamePanel.tileSize, gamePanel.tileSize*2+gamePanel.screenHeight/4, gamePanel.screenWidth/2, gamePanel.screenHeight/4, g2);
+        }
 
         g2.drawString(text, stringX, gamePanel.screenHeight/2);
 
@@ -52,9 +68,6 @@ public class BattleDialogueState implements  BattleState{
 
             case KeyEvent.VK_ENTER:
                 nextStep.run();
-                break;
-            case KeyEvent.VK_BACK_SPACE:
-                battleManager.popAllExceptFirst();
                 break;
 
         }

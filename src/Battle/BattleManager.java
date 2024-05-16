@@ -45,7 +45,7 @@ public class BattleManager {
         this.battleStates.add(new ActionSelectState(this, gamePanel));
 
 //        this.battleStates.add(new BattleResultsState(this, gamePanel, turnOrderManager.enemyTeam));
-        this.battleStates.add(new LevelUpState(gamePanel, playerTeam.get(0), 3));
+//        this.battleStates.add(new LevelUpState(turnOrderManager.battleManager, gamePanel, playerTeam.get(0), 3));
 
         try{
             InputStream inputStream = getClass().getResourceAsStream("/fonts/Jersey15-Regular.ttf");
