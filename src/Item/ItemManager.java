@@ -17,14 +17,13 @@ public class ItemManager {
 
         this.addItem(SmallPotion.name);
 
-//
-//        this.addItem(Ether.name);
-//        this.addItem(Ether.name);
-//        this.addItem(Ether.name);
-//
-//        this.addItem(Revive.name);
-//        this.addItem(Revive.name);
-//        this.addItem(Revive.name);
+        this.addItem(Ether.name);
+        this.addItem(Ether.name);
+        this.addItem(Ether.name);
+
+        this.addItem(Revive.name);
+        this.addItem(Revive.name);
+        this.addItem(Revive.name);
     }
 
     public void addItem(String itemName){

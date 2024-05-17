@@ -77,7 +77,7 @@ public class SkillSelectState implements State {
                     currentSkill = 0;
                 }
                 break;
-            case KeyEvent.VK_ENTER, KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_ENTER:
                 if(battleManager.turnOrderManager.playerTeam.get(battleManager.turnOrderManager.currentIndex).magicPower >= skills[currentSkill].getMpCost()){
 
                     battleManager.pushState(new TargetSelectState(skills, currentSkill, skills[currentSkill], battleManager, gamePanel));
@@ -86,7 +86,6 @@ public class SkillSelectState implements State {
                 }
                 break;
             case KeyEvent.VK_BACK_SPACE:
-            case KeyEvent.VK_LEFT:
                 battleManager.popState();
                 break;
 

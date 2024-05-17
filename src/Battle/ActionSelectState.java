@@ -143,7 +143,6 @@ public class ActionSelectState implements State {
                 }
                 break;
             case KeyEvent.VK_ENTER:
-            case KeyEvent.VK_RIGHT:
                 switch (currentOption){
                     case Attack:
                         battleManager.pushState(new TargetSelectState(new String[] { "Attack", "Skills", "Items", "Pass", "Escape"}, currentOption.ordinal(), new Attack(), battleManager, gamePanel));
