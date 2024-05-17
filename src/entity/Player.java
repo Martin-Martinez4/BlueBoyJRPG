@@ -19,7 +19,7 @@ public class Player extends Entity{
     final public int screenX;
     final public int screenY;
 
-    int encounterRate = 50;
+    int encounterRate = 65;
     final int defaultEncounterCoolDown = 100;
     int encounterCoolDown = defaultEncounterCoolDown;
 

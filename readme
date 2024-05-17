@@ -1,0 +1,30 @@
+Controls:
+
+Depending on what IDE you are using you may have to specify that the resources folder as the root resource folder.
+
+Load and New Game on the title screen do the same thing, I did not implement save files.
+
+You can move the character around the map and navigate the menus using the Arrow Buttons or WASD.
+
+P will open the pause menu.  In the pause menu you can use items on party members.
+
+Enter is used to confirm a choice Backspace to cancel.
+
+Battles happen randomly.  The transition from the map to the battle screen is sudden, as are the transitions between all the states if I had more time I would implement a transition state to help with this, but I do not have the time.
+
+During battle on the right side there is a box that displays the current team's turns.
+- Green boxes are normal turns.  Blue boxes are advantage turns.
+- Hitting an enemy with an element it is weak to will earn you advantage points.  Hitting an enemy with something it is strong against will deduct a turn from you.
+- Passing converts a normal turn into an advantage turn (think of it as using half a turn).
+- You cannot gain advantage turns if there are no normal turns on the stack to replace.
+- Normal turns are always used first.
+
+The items option is present while in battle but I have not implemented it yet.
+
+If dialogue appears press Enter to advance past it.
+
+After a battle a battle results screen appears press Enter to continue.
+
+When your character levels up a level up screen will appear where you have to allocate bonus points to stats of your choice.  You have to allocate all points.  Press Enter to confirm your choice.
+
+
